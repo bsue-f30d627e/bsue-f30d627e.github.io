@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>91情深叉喔vlog合集 - 视频条目与生活记录聚合</title>
+  <meta name="description" content="91情深叉喔vlog合集提供生活记录类视频条目、合集目录、更新动态与观看指南，适合关注日常随拍与情感叙事的观众浏览和参考。">
+  <meta name="keywords" content="91情深叉喔vlog合集">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232b6cb0'/%3E%3Cpath d='M30 35h30v30H30z' fill='%23ffffff' opacity='.9'/%3E%3Ccircle cx='72' cy='50' r='12' fill='%23ffb74d'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      --color-primary: #2b6cb0;
+      --color-primary-light: #d9e9fa;
+      --color-primary-dark: #1a4a7a;
+      --color-accent: #e67e22;
+      --color-bg: #f7f9fc;
+      --color-surface: #ffffff;
+      --color-text: #1e293b;
+      --color-text-secondary: #475569;
+      --color-text-tertiary: #94a3b8;
+      --color-border: #e2e8f0;
+      --radius-card: 14px;
+      --radius-button: 10px;
+      --radius-tag: 6px;
+      --radius-banner: 18px;
+      --shadow-default: 0 2px 8px rgba(0,0,0,0.04);
+      --shadow-hover: 0 8px 24px rgba(0,0,0,0.08);
+      --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      --max-width: 1320px;
+      --announcement-height: 40px;
+      --header-height: 64px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: calc(var(--announcement-height) + var(--header-height) + 16px); }
+    body { font-family: var(--font-sans); background: var(--color-bg); color: var(--color-text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    img { max-width: 100%; display: block; }
+    button { font-family: inherit; cursor: pointer; }
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+
+    /* 吸顶公告条 */
+    .announcement-bar {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--color-primary-dark); color: #fff; height: var(--announcement-height);
+      display: flex; align-items: center; font-size: 13px;
+    }
+    .announcement-bar .container { display: flex; align-items: center; gap: 24px; width: 100%; overflow-x: auto; white-space: nowrap; }
+    .announcement-bar .brand-mark { font-weight: 700; color: #ffd54f; flex-shrink: 0; }
+    .announcement-item { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    .announcement-item .date { opacity: 0.8; font-variant-numeric: tabular-nums; }
+    .announcement-item .name { font-weight: 500; }
+
+    /* 吸顶页头 */
+    .site-header {
+      position: sticky; top: var(--announcement-height); z-index: 99;
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--color-border);
+      height: var(--header-height);
+    }
+    .site-header .container { display: flex; align-items: center; gap: 20px; height: 100%; }
+    .logo { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .logo svg { width: 32px; height: 32px; }
+    .logo-text { font-size: 18px; font-weight: 700; color: var(--color-primary-dark); letter-spacing: -0.3px; }
+    .logo-text span { color: var(--color-accent); }
+    .main-nav { display: flex; gap: 4px; flex: 1; overflow-x: auto; scrollbar-width: none; }
+    .main-nav::-webkit-scrollbar { display: none; }
+    .main-nav a { padding: 6px 12px; border-radius: var(--radius-button); font-size: 14px; color: var(--color-text-secondary); white-space: nowrap; transition: background 0.15s, color 0.15s; }
+    .main-nav a:hover { background: var(--color-primary-light); color: var(--color-primary-dark); text-decoration: none; }
+    .header-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .search-box { display: flex; align-items: center; background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-button); padding: 0 10px; height: 36px; }
+    .search-box input { border: none; background: transparent; outline: none; font-size: 13px; width: 140px; color: var(--color-text); }
+    .search-box input::placeholder { color: var(--color-text-tertiary); }
+    .search-box button { border: none; background: none; font-size: 13px; color: var(--color-primary); font-weight: 500; padding: 0 4px; }
+    .btn-submit { background: var(--color-primary); color: #fff; border: none; border-radius: var(--radius-button); padding: 7px 16px; font-size: 13px; font-weight: 500; transition: background 0.15s; }
+    .btn-submit:hover { background: var(--color-primary-dark); }
+    .hamburger { display: none; background: none; border: none; font-size: 22px; color: var(--color-text); padding: 4px; }
+
+    /* 首屏 */
+    .hero { background: linear-gradient(135deg, #e8f0fe 0%, #f3e8ff 50%, #fef3e2 100%); padding: 48px 0 40px; position: relative; overflow: hidden; }
+    .hero::after { content: ''; position: absolute; right: -60px; top: -60px; width: 280px; height: 280px; background: radial-gradient(circle, rgba(43,108,176,0.08) 0%, transparent 70%); border-radius: 50%; pointer-events: none; }
+    .hero-content { display: grid; grid-template-columns: 1fr 380px; gap: 48px; align-items: center; position: relative; z-index: 1; }
+    .hero h1 { font-size: 36px; font-weight: 800; color: var(--color-primary-dark); letter-spacing: -0.5px; line-height: 1.25; margin-bottom: 14px; }
+    .hero-desc { font-size: 15px; color: var(--color-text-secondary); max-width: 520px; line-height: 1.7; margin-bottom: 22px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-actions .btn-primary { background: var(--color-primary); color: #fff; padding: 10px 24px; border-radius: var(--radius-button); font-weight: 600; font-size: 14px; border: none; transition: background 0.15s; }
+    .hero-actions .btn-primary:hover { background: var(--color-primary-dark); text-decoration: none; }
+    .hero-actions .btn-ghost { background: #fff; color: var(--color-primary-dark); padding: 10px 24px; border-radius: var(--radius-button); font-weight: 500; font-size: 14px; border: 1px solid var(--color-border); transition: border-color 0.15s; }
+    .hero-actions .btn-ghost:hover { border-color: var(--color-primary); text-decoration: none; }
+    .hero-visual { display: flex; justify-content: center; align-items: center; }
+    .hero-visual svg { width: 100%; max-width: 340px; height: auto; }
+    .hero-stats { display: flex; gap: 32px; margin-top: 28px; }
+    .hero-stats .stat-item { text-align: left; }
+    .hero-stats .stat-num { font-size: 22px; font-weight: 700; color: var(--color-primary-dark); }
+    .hero-stats .stat-label { font-size: 12px; color: var(--color-text-tertiary); margin-top: 2px; }
+
+    /* 布局：三栏 */
+    .main-layout { display: grid; grid-template-columns: 180px 1fr 260px; gap: 28px; padding: 32px 0 48px; }
+    .channel-sidebar { position: sticky; top: calc(var(--announcement-height) + var(--header-height) + 20px); align-self: start; }
+    .channel-sidebar h3 { font-size: 13px; font-weight: 600; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+    .channel-list { list-style: none; }
+    .channel-list li { margin-bottom: 4px; }
+    .channel-list a { display: block; padding: 7px 12px; border-radius: var(--radius-button); font-size: 14px; color: var(--color-text-secondary); transition: background 0.15s, color 0.15s; }
+    .channel-list a:hover, .channel-list a.active { background: var(--color-primary-light); color: var(--color-primary-dark); text-decoration: none; font-weight: 500; }
+
+    .main-content { min-width: 0; }
+    .side-panel { display: flex; flex-direction: column; gap: 20px; }
+    .side-card { background: var(--color-surface); border-radius: var(--radius-card); padding: 18px 16px; box-shadow: var(--shadow-default); border: 1px solid var(--color-border); }
+    .side-card h3 { font-size: 15px; font-weight: 600; margin-bottom: 12px; color: var(--color-text); }
+    .side-card .rank-list { list-style: none; counter-reset: rank; }
+    .side-card .rank-list li { counter-increment: rank; display: flex; gap: 10px; align-items: flex-start; padding: 7px 0; border-bottom: 1px solid var(--color-border); font-size: 13px; }
+    .side-card .rank-list li:last-child { border-bottom: none; }
+    .side-card .rank-list li::before { content: counter(rank); font-weight: 700; color: var(--color-primary); font-size: 14px; min-width: 18px; }
+    .side-card .rank-list a { color: var(--color-text-secondary); line-height: 1.4; }
+    .side-card .rank-list a:hover { color: var(--color-primary); }
+    .side-card .update-list { list-style: none; }
+    .side-card .update-list li { padding: 7px 0; border-bottom: 1px dashed var(--color-border); font-size: 13px; color: var(--color-text-secondary); display: flex; justify-content: space-between; gap: 8px; }
+    .side-card .update-list li:last-child { border-bottom: none; }
+    .side-card .update-list .date-tag { color: var(--color-text-tertiary); font-size: 12px; flex-shrink: 0; }
+
+    /* 板块通用 */
+    .section-block { margin-bottom: 40px; }
+    .section-block h2 { font-size: 22px; font-weight: 700; margin-bottom: 6px; color: var(--color-text); letter-spacing: -0.3px; }
+    .section-block .section-desc { font-size: 14px; color: var(--color-text-tertiary); margin-bottom: 18px; }
+    .section-header-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 18px; flex-wrap: wrap; gap: 8px; }
+
+    /* 概览文字 */
+    .overview-text { font-size: 15px; color: var(--color-text-secondary); line-height: 1.85; background: var(--color-surface); border-radius: var(--radius-card); padding: 24px 28px; border: 1px solid var(--color-border); box-shadow: var(--shadow-default); }
+    .overview-text p { margin-bottom: 12px; }
+    .overview-text p:last-child { margin-bottom: 0; }
+
+    /* 精选卡片 */
+    .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
+    .content-card { background: var(--color-surface); border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--color-border); box-shadow: var(--shadow-default); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+    .content-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+    .content-card .card-img { width: 100%; aspect-ratio: 4/3; object-fit: cover; background: var(--color-primary-light); }
+    .content-card .card-body { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; }
+    .content-card .card-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; color: var(--color-text); line-height: 1.4; }
+    .content-card .card-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
+    .tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: var(--radius-tag); background: var(--color-primary-light); color: var(--color-primary-dark); font-weight: 500; }
+    .tag-accent { background: #fef3e2; color: #b45309; }
+    .tag-green { background: #e6f7ed; color: #047857; }
+    .content-card .card-desc { font-size: 13px; color: var(--color-text-secondary); line-height: 1.55; flex: 1; margin-bottom: 10px; }
+    .content-card .card-footer { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--color-text-tertiary); }
+    .hot-value { color: var(--color-accent); font-weight: 600; }
+
+    /* 动态列表 */
+    .dynamic-list { list-style: none; background: var(--color-surface); border-radius: var(--radius-card); border: 1px solid var(--color-border); overflow: hidden; }
+    .dynamic-list li { display: flex; align-items: baseline; gap: 14px; padding: 14px 20px; border-bottom: 1px solid var(--color-border); transition: background 0.15s; }
+    .dynamic-list li:last-child { border-bottom: none; }
+    .dynamic-list li:hover { background: #f8fafc; }
+    .dynamic-list .d-title { font-size: 14px; font-weight: 600; color: var(--color-text); min-width: 180px; flex-shrink: 0; }
+    .dynamic-list .d-summary { font-size: 13px; color: var(--color-text-secondary); flex: 1; }
+    .dynamic-list .d-time { font-size: 12px; color: var(--color-text-tertiary); flex-shrink: 0; }
+
+    /* 分类入口 */
+    .category-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .category-item { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); padding: 18px 16px; text-align: center; transition: border-color 0.15s, box-shadow 0.15s; }
+    .category-item:hover { border-color: var(--color-primary); box-shadow: var(--shadow-hover); }
+    .category-item .cat-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+    .category-item .cat-name { font-size: 14px; font-weight: 600; color: var(--color-text); margin-bottom: 4px; }
+    .category-item .cat-count { font-size: 12px; color: var(--color-text-tertiary); }
+
+    /* 深度解析 */
+    .deep-dive { background: var(--color-surface); border-radius: var(--radius-card); border: 1px solid var(--color-border); padding: 28px 32px; box-shadow: var(--shadow-default); font-size: 15px; color: var(--color-text-secondary); line-height: 1.85; }
+    .deep-dive h3 { font-size: 17px; font-weight: 700; color: var(--color-text); margin: 24px 0 10px; }
+    .deep-dive h3:first-of-type { margin-top: 0; }
+    .deep-dive p { margin-bottom: 12px; }
+    .deep-dive ul, .deep-dive ol { margin: 8px 0 14px 20px; }
+    .deep-dive li { margin-bottom: 6px; }
+    .deep-dive .highlight-box { background: var(--color-bg); border-left: 3px solid var(--color-primary); padding: 14px 18px; border-radius: 0 var(--radius-tag) var(--radius-tag) 0; margin: 16px 0; font-size: 14px; }
+
+    /* 体验指南 */
+    .guide-steps { counter-reset: step; list-style: none; }
+    .guide-steps li { counter-increment: step; position: relative; padding: 16px 20px 16px 56px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); margin-bottom: 12px; font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+    .guide-steps li::before { content: counter(step); position: absolute; left: 18px; top: 16px; width: 26px; height: 26px; background: var(--color-primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; }
+    .guide-steps li strong { color: var(--color-text); }
+
+    /* FAQ */
+    .faq-list { display: flex; flex-direction: column; gap: 10px; }
+    .faq-list details { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); overflow: hidden; }
+    .faq-list summary { padding: 14px 20px; font-size: 14px; font-weight: 600; color: var(--color-text); cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; transition: background 0.15s; }
+    .faq-list summary::-webkit-details-marker { display: none; }
+    .faq-list summary::after { content: '+'; font-size: 18px; color: var(--color-primary); font-weight: 400; }
+    .faq-list details[open] summary::after { content: '−'; }
+    .faq-list details[open] summary { background: #f8fafc; }
+    .faq-list .faq-answer { padding: 0 20px 16px; font-size: 14px; color: var(--color-text-secondary); line-height: 1.75; }
+
+    /* 评论 */
+    .comment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; }
+    .comment-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); padding: 14px 16px; font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+    .comment-card .comment-user { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .comment-card .avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--color-primary-light); color: var(--color-primary-dark); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+    .comment-card .nickname { font-size: 13px; font-weight: 600; color: var(--color-text); }
+    .comment-card .comment-time { font-size: 11px; color: var(--color-text-tertiary); margin-left: auto; }
+
+    /* 相关资讯 */
+    .news-list { list-style: none; }
+    .news-list li { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); padding: 16px 20px; margin-bottom: 12px; }
+    .news-list .news-header { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+    .news-list .news-title { font-size: 15px; font-weight: 600; color: var(--color-text); }
+    .news-list .news-date { font-size: 12px; color: var(--color-text-tertiary); flex-shrink: 0; }
+    .news-list .news-summary { font-size: 13px; color: var(--color-text-secondary); line-height: 1.6; }
+
+    /* 相关推荐 */
+    .recommend-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+    .recommend-tags a { display: inline-block; padding: 7px 14px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-button); font-size: 13px; color: var(--color-text-secondary); transition: border-color 0.15s, color 0.15s; }
+    .recommend-tags a:hover { border-color: var(--color-primary); color: var(--color-primary); text-decoration: none; }
+
+    /* 创作者证言 */
+    .testimonial-panel { background: var(--color-surface); border-radius: var(--radius-card); border: 1px solid var(--color-border); padding: 24px 28px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .testimonial-item { font-size: 14px; color: var(--color-text-secondary); line-height: 1.7; }
+    .testimonial-item .quote-mark { font-size: 28px; color: var(--color-primary-light); line-height: 1; display: block; margin-bottom: 4px; }
+    .testimonial-item .author { margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--color-text); }
+    .testimonial-item .author-role { font-size: 12px; color: var(--color-text-tertiary); font-weight: 400; }
+
+    /* 页尾 */
+    .site-footer { background: #1e293b; color: #cbd5e1; padding: 40px 0 28px; margin-top: 40px; }
+    .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 28px; }
+    .footer-brand .footer-logo { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+    .footer-brand p { font-size: 13px; line-height: 1.7; color: #94a3b8; max-width: 320px; }
+    .footer-col h4 { font-size: 13px; font-weight: 600; color: #e2e8f0; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 6px; }
+    .footer-col a { font-size: 13px; color: #94a3b8; }
+    .footer-col a:hover { color: #fff; text-decoration: none; }
+    .footer-bottom { border-top: 1px solid #334155; padding-top: 18px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; font-size: 12px; color: #64748b; }
+
+    /* 回到顶部 */
+    .back-to-top { position: fixed; bottom: 28px; right: 28px; width: 42px; height: 42px; border-radius: 50%; background: var(--color-primary); color: #fff; border: none; font-size: 18px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(43,108,176,0.3); opacity: 0; visibility: hidden; transition: opacity 0.25s, visibility 0.25s; z-index: 90; }
+    .back-to-top.show { opacity: 1; visibility: visible; }
+    .back-to-top:hover { background: var(--color-primary-dark); }
+
+    /* 移动端遮罩 */
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 95; }
+    .overlay.active { display: block; }
+
+    /* 响应式 */
+    @media (max-width: 1024px) {
+      .main-layout { grid-template-columns: 1fr 260px; }
+      .channel-sidebar { display: none; }
+      .hero-content { grid-template-columns: 1fr; gap: 24px; }
+      .hero-visual { order: -1; }
+      .hero-visual svg { max-width: 240px; }
+      .hero h1 { font-size: 30px; }
+      .category-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .testimonial-panel { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 740px) {
+      .main-layout { grid-template-columns: 1fr; }
+      .side-panel { margin-top: 8px; }
+      .hamburger { display: block; }
+      .main-nav { display: none; position: absolute; top: var(--header-height); left: 0; right: 0; background: #fff; flex-direction: column; padding: 8px 16px; border-bottom: 1px solid var(--color-border); box-shadow: var(--shadow-hover); z-index: 98; }
+      .main-nav.open { display: flex; }
+      .main-nav a { padding: 10px 12px; font-size: 15px; }
+      .search-box { display: none; }
+      .hero h1 { font-size: 26px; }
+      .hero-stats { gap: 20px; flex-wrap: wrap; }
+      .hero-stats .stat-num { font-size: 18px; }
+      .dynamic-list li { flex-direction: column; gap: 4px; }
+      .dynamic-list .d-title { min-width: 0; }
+      .category-grid { grid-template-columns: repeat(2, 1fr); }
+      .comment-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 20px; }
+      .footer-bottom { flex-direction: column; text-align: center; }
+      .deep-dive { padding: 20px 18px; }
+      .overview-text { padding: 18px 20px; }
+      .back-to-top { bottom: 16px; right: 16px; width: 38px; height: 38px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+      html { scroll-behavior: auto; }
+    }
+  </style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+<!-- 吸顶公告条 -->
+<div class="announcement-bar">
+  <div class="container">
+    <span class="brand-mark">91情深叉喔vlog合集</span>
+    <div class="announcement-item"><span class="date">2026-11-08</span><span class="name">《雨夜便利店》第4集更新</span></div>
+    <div class="announcement-item"><span class="date">2026-11-06</span><span class="name">「城市漫步」系列新增12条</span></div>
+    <div class="announcement-item"><span class="date">2026-11-03</span><span class="name">合集总播放突破420万</span></div>
+  </div>
+</div>
+
+<!-- 吸顶页头 -->
+<header class="site-header">
+  <div class="container">
+    <div class="logo">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="100" height="100" rx="20" fill="#2b6cb0"/>
+        <rect x="28" y="32" width="32" height="36" rx="4" fill="#ffffff" opacity="0.9"/>
+        <path d="M64 50 L82 38 L82 62 Z" fill="#ffb74d"/>
+        <circle cx="44" cy="42" r="5" fill="#2b6cb0"/>
+      </svg>
+      <span class="logo-text">91情深叉喔<span>vlog合集</span></span>
+    </div>
+    <nav class="main-nav" id="mainNav">
+      <a href="/#overview">领域概览</a>
+      <a href="/#featured">精选推荐</a>
+      <a href="/#updates">最新动态</a>
+      <a href="/#categories">分类入口</a>
+      <a href="/#deep-dive">深度解析</a>
+      <a href="/#guide">体验指南</a>
+      <a href="/#faq">常见问题</a>
+      <a href="/#comments">用户评论</a>
+      <a href="/#news">相关资讯</a>
+      <a href="/#recommend">相关推荐</a>
+      <a href="/#testimonials">创作者说</a>
+    </nav>
+    <div class="header-actions">
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="搜索条目..." aria-label="搜索条目">
+        <button id="searchBtn">搜索</button>
+      </div>
+      <button class="btn-submit" id="submitBtn">投稿</button>
+      <button class="hamburger" id="hamburgerBtn" aria-label="打开菜单" aria-expanded="false">☰</button>
+    </div>
+  </div>
+</header>
+<div class="overlay" id="overlay"></div>
+
+<!-- 首屏 -->
+<section class="hero">
+  <div class="container hero-content">
+    <div class="hero-text">
+      <h1>91情深叉喔vlog合集</h1>
+      <p class="hero-desc">汇集城市随拍、雨夜便利店、深夜食堂、周末骑行等生活记录视频条目。每一条包含具体场景、拍摄时间、时长与看点说明，按系列和集数整理，方便查找和连续观看。</p>
+      <div class="hero-actions">
+        <a href="/#featured" class="btn-primary">浏览精选条目</a>
+        <a href="/#updates" class="btn-ghost">查看最新更新</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item"><div class="stat-num">186</div><div class="stat-label">视频条目</div></div>
+        <div class="stat-item"><div class="stat-num">23</div><div class="stat-label">系列分类</div></div>
+        <div class="stat-item"><div class="stat-num">2026-11-08</div><div class="stat-label">最近更新</div></div>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <svg viewBox="0 0 340 260" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="20" y="30" width="200" height="140" rx="12" fill="#d9e9fa"/>
+        <rect x="30" y="42" width="180" height="116" rx="8" fill="#2b6cb0" opacity="0.15"/>
+        <circle cx="90" cy="90" r="22" fill="#2b6cb0" opacity="0.4"/>
+        <rect x="130" y="70" width="60" height="8" rx="4" fill="#2b6cb0" opacity="0.3"/>
+        <rect x="130" y="88" width="44" height="8" rx="4" fill="#2b6cb0" opacity="0.2"/>
+        <rect x="160" y="150" width="150" height="90" rx="12" fill="#fef3e2"/>
+        <circle cx="210" cy="190" r="18" fill="#e67e22" opacity="0.5"/>
+        <rect x="240" y="175" width="50" height="7" rx="3.5" fill="#e67e22" opacity="0.4"/>
+        <rect x="240" y="192" width="36" height="7" rx="3.5" fill="#e67e22" opacity="0.25"/>
+        <rect x="60" y="190" width="70" height="50" rx="8" fill="#e8f0fe"/>
+        <path d="M80 210 L95 200 L95 220 Z" fill="#2b6cb0" opacity="0.5"/>
+        <rect x="108" y="206" width="14" height="4" rx="2" fill="#2b6cb0" opacity="0.3"/>
+        <rect x="108" y="216" width="20" height="4" rx="2" fill="#2b6cb0" opacity="0.2"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- 主布局 -->
+<div class="container">
+  <div class="main-layout">
+    <!-- 左侧频道 -->
+    <aside class="channel-sidebar">
+      <h3>频道索引</h3>
+      <ul class="channel-list">
+        <li><a href="/#overview" class="active">领域概览</a></li>
+        <li><a href="/#featured">精选推荐</a></li>
+        <li><a href="/#updates">最新动态</a></li>
+        <li><a href="/#categories">分类入口</a></li>
+        <li><a href="/#deep-dive">深度解析</a></li>
+        <li><a href="/#guide">体验指南</a></li>
+        <li><a href="/#faq">常见问题</a></li>
+        <li><a href="/#comments">用户评论</a></li>
+        <li><a href="/#news">相关资讯</a></li>
+        <li><a href="/#recommend">相关推荐</a></li>
+        <li><a href="/#testimonials">创作者说</a></li>
+      </ul>
+    </aside>
+
+    <!-- 中间主内容 -->
+    <main class="main-content">
+
+      <!-- 1. 领域概览 -->
+      <section class="section-block" id="overview">
+        <h2>领域概览：生活随拍视频条目</h2>
+        <div class="overview-text">
+          <p>生活随拍类视频以个人视角的日常记录为核心，内容覆盖城市街景、便利店深夜片段、骑行沿途、出租屋做饭、雨天窗口等场景。这类视频的条目通常按系列划分，一个系列包含若干集，每集时长3到15分钟不等，拍摄时间多集中在晚间和周末。</p>
+          <p>从2026年10月的条目分布看，城市漫步系列新增了12条，雨夜便利店系列更新到第4集，深夜食堂系列累计9集。拍摄地点集中在杭州、成都、长沙三个城市，其中杭州占比接近四成。设备以手机为主，少数条目使用卡片机拍摄，画质差异在夜景场景中比较明显。</p>
+          <p>值得留意的方向包括：长镜头跟拍与分段剪辑的节奏差异、同期声与环境音的保留比例、单集叙事是否围绕一个具体动作展开（比如“去便利店买一瓶水”或“骑车穿过三条街”）。条目信息通常标注拍摄日期、时长、系列归属和一句场景描述，方便按时间或系列检索。</p>
+        </div>
+      </section>
+
+      <!-- 2. 精选内容推荐 -->
+      <section class="section-block" id="featured">
+        <div class="section-header-row">
+          <div>
+            <h2>精选内容推荐</h2>
+            <p class="section-desc">按系列归属和场景类型筛选的12条代表性条目</p>
+          </div>
+        </div>
+        <div class="card-grid">
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/vlograin1/400/300" alt="雨夜便利店门口暖色灯光与玻璃上的雨滴" width="400" height="300" loading="lazy" class="card-img">
+            <div class="card-body">
+              <div class="card-meta"><span class="tag">雨夜便利店</span><span class="tag tag-accent">第4集</span></div>
+              <h3 class="card-title">雨夜便利店·第4集：凌晨两点的关东煮</h3>
+              <p class="card-desc">全程12分钟，拍摄于杭州文三路一家便利店。镜头从推门进店开始，记录选关东煮、加热、坐窗边吃完的过程，同期声保留收银提示音和雨声。</p>
+              <div class="card-footer"><span>2026-11-08</span><span class="hot-value">热度 9.2</span></div>
+            </div>
+          </article>
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/vlogcity2/400/300" alt="城市天桥夜景车流灯光轨迹" width="400" height="300" loading="lazy" class="card-img">
+            <div class="card-body">
+              <div class="card-meta"><span class="tag">城市漫步</span><span class="tag tag-green">新条目</span></div>
+              <h3 class="card-title">城市漫步·第12条：从天桥走到旧书店</h3>
+              <p class="card-desc">9分40秒，成都建设路附近。跟拍步行经过天桥、夜市口、巷子旧书店，中途与店主聊了三分钟书价。剪辑保留两个长镜头，没有背景音乐。</p>
+              <div class="card-footer"><span>2026-11-06</span><span class="hot-value">热度 8.7</span></div>
+            </div>
+          </article>
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/vlogbike3/400/300" alt="傍晚骑行经过江边绿道" width="400" height="300" loading="lazy" class="card-img">
+            <div class="card-body">
+              <div class="card-meta"><span class="tag">周末骑行</span><span class="tag">长沙</span></div>
+              <h3 class="card-title">周末骑行·湘江边15公里往返</h3>
+              <p class="card-desc">14分钟，从橘子洲大桥骑到渔人码头折返。前半段用胸挂机位，后半段固定在车把上，路面颠簸声和风声都留着。傍晚六点出发，光线变化完整。</p>
+              <div class="card-footer"><span>2026-10-28</span><span class="hot-value">热度 8.4</span></div>
+            </div>
+          </article>
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/vlogfood4/400/300" alt="出租屋小厨房煮面特写" width="400" height="300" loading="lazy" class="card-img">
+            <div class="card-body">
+              <div class="card-meta"><span class="tag">深夜食堂</span><span class="tag tag-accent">第9集</span></div>
+              <h3 class="card-title">深夜食堂·第9集：出租屋的酱油炒面</h3>
+              <p class="card-desc">7分20秒，杭州拱墅区合租房厨房。从切包菜开始到出锅装盘，步骤没有省略，调料用量在画面里可以看清。吃完后洗锅的片段留了40秒。</p>
+              <div class="card-footer"><span>2026-11-02</span><span class="hot-value">热度 8.9</span></div>
+            </div>
+          </article>
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/vlograin5/400/300" alt="雨天公交站台等车的人群" width="400" height="300" loading="lazy" class="card-img">
+            <div class="card-body">
+              <div class="card-meta"><span class="tag">雨天窗口</span><span class="tag">杭州</span></div>
+              <h3 class="card-title">雨天窗口·第2集：公交站台四十分钟</h3>
+              <p class="card-desc">固定机位拍摄站台等车场景，镜头只做了两次平移。画面里有撑伞跑过的人、外卖电动车溅起的水花，站牌上的公交线路信息清晰可读。</p>
+              <div class="card-footer"><span>2026-10-25</span><span class="hot-value">热度 7.8</span></div>
+            </div>
+          </article>
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/vlogroom6/400/300" alt="出租屋窗边书桌与台灯" width="400" height="300" loading="lazy" class="card-img">
+            <div class="card-body">
+              <div class="card-meta"><span class="tag">出租屋日常</span><span class="tag tag-green">第1集</span></div>
+              <h3 class="card-title">出租屋日常·第1集：搬进来第三天的桌面</h3>
+              <p class="card-desc">5分50秒，记录从纸箱里拿书摆上书架、接台灯、试插座的过程。没有旁白，只有撕胶带和书架晃动的声响。书脊上的书名在画面里能看清。</p>
+              <div class="card-footer"><span>2026-10-20</span><span class="hot-value">热度 7.6</span></div>
+            </div>
+          </article>
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/vlognight7/400/300" alt="夜市摊位烤串冒烟与人群" width="400" height="300" loading="lazy" class="card-img">
+            <div class="card-body">
+              <div class="card-meta"><span class="tag">城市漫步</span><span class="tag tag-accent">第11条</span></div>
+              <h3 class="card-title">城市漫步·第11条：夜市收摊前的半小时</h3>
+              <p class="card-desc">11分钟，长沙四方坪夜市。从十一点半开始跟拍三个摊位收摊，摊主和熟客的对话没有剪掉。画面噪点明显，但烤炉的暖光和塑料凳的细节都在。</p>
+              <div class="card-footer"><span>2026-11-01</span><span class="hot-value">热度 8.3</span></div>
+            </div>
+          </article>
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/vlograin8/400/300" alt="便利店热饮柜前的暖色灯光" width="400" height="300" loading="lazy" class="card-img">
+            <div class="card-body">
+              <div class="card-meta"><span class="tag">雨夜便利店</span><span class="tag">第3集</span></div>
+              <h3 class="card-title">雨夜便利店·第3集：热饮柜前站了十分钟</h3>
+              <p class="card-desc">8分钟，成都一家便利店。镜头对着热饮柜，记录选饮料的犹豫过程，中间穿插店员补货的片段。收银台旁边的关东煮价格标签在画面里能看清。</p>
+              <div class="card-footer"><span>2026-10-30</span><span class="hot-value">热度 8.1</span></div>
+            </div>
+          </article>
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/vlogfood9/400/300" alt="厨房灶台上煮汤的锅与蒸汽" width="400" height="300" loading="lazy" class="card-img">
+            <div class="card-body">
+              <div class="card-meta"><span class="tag">深夜食堂</span><span class="tag">第8集</span></div>
+              <h3 class="card-title">深夜食堂·第8集：番茄蛋汤配隔夜饭</h3>
+              <p class="card-desc">6分10秒，杭州。从切番茄到打蛋下锅，全程一个机位没有移动。汤煮开时蒸汽模糊了镜头，没有重拍，这段保留在正片里。吃完后镜头对着空碗停了20秒。</p>
+              <div class="card-footer"><span>2026-10-26</span><span class="hot-value">热度 7.9</span></div>
+            </div>
+          </article>
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/vlogbike10/400/300" alt="自行车停在桥上远处是城市天际线" width="400" height="300" loading="lazy" class="card-img">
+            <div class="card-body">
+              <div class="card-meta"><span class="tag">周末骑行</span><span class="tag tag-green">清晨场</span></div>
+              <h3 class="card-title">周末骑行·清晨六点的三桥往返</h3>
+              <p class="card-desc">10分钟，长沙。天没亮就出发，镜头里有路灯熄灭的瞬间和环卫车经过。骑到第三桥折返时太阳刚出来，江面反光过曝了大约8秒，没有调色修正。</p>
+              <div class="card-footer"><span>2026-10-22</span><span class="hot-value">热度 7.5</span></div>
+            </div>
+          </article>
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/vlogroom11/400/300" alt="夜晚窗边台灯下的笔记本和笔" width="400" height="300" loading="lazy" class="card-img">
+            <div class="card-body">
+              <div class="card-meta"><span class="tag">出租屋日常</span><span class="tag">第2集</span></div>
+              <h3 class="card-title">出租屋日常·第2集：台灯下抄书到凌晨</h3>
+              <p class="card-desc">9分30秒，固定俯拍桌面。从翻开书到抄完两页，中途换了一次笔芯。背景里有冰箱压缩机启动的嗡嗡声，抄写内容在画面中可辨认出是《城南旧事》片段。</p>
+              <div class="card-footer"><span>2026-11-04</span><span class="hot-value">热度 8.0</span></div>
+            </div>
+          </article>
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/vlogcity12/400/300" alt="老巷子里的理发店转灯与晾衣杆" width="400" height="300" loading="lazy" class="card-img">
+            <div class="card-body">
+              <div class="card-meta"><span class="tag">城市漫步</span><span class="tag tag-accent">第10条</span></div>
+              <h3 class="card-title">城市漫步·第10条：老巷子理发店的转灯</h3>
+              <p class="card-desc">8分50秒，成都。镜头对准理发店门口的转灯和晾衣杆，店主在店里给客人修面。隔着玻璃拍了六分钟，玻璃反光叠着街对面水果摊的灯箱。</p>
+              <div class="card-footer"><span>2026-10-29</span><span class="hot-value">热度 7.7</span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 3. 最新更新 -->
+      <section class="section-block" id="updates">
+        <h2>最新更新与动态</h2>
+        <p class="section-desc">2026年10月下旬至11月8日的条目变动</p>
+        <ul class="dynamic-list">
+          <li><span class="d-title">雨夜便利店·第4集</span><span class="d-summary">杭州文三路店，凌晨两点关东煮场景，12分钟正片已上线</span><span class="d-time">2026-11-08</span></li>
+          <li><span class="d-title">城市漫步系列新增12条</span><span class="d-summary">成都建设路、长沙四方坪、杭州拱宸桥三地素材集中整理完成</span><span class="d-time">2026-11-06</span></li>
+          <li><span class="d-title">出租屋日常·第2集</span><span class="d-summary">台灯下抄书片段，固定俯拍9分30秒，保留冰箱压缩机声响</span><span class="d-time">2026-11-04</span></li>
+          <li><span class="d-title">深夜食堂·第9集</span><span class="d-summary">酱油炒面完整流程，调料用量可辨，含洗锅收尾片段</span><span class="d-time">2026-11-02</span></li>
+          <li><span class="d-title">城市漫步·第11条</span><span class="d-summary">四方坪夜市收摊跟拍，三个摊位对话未剪，画面噪点明显</span><span class="d-time">2026-11-01</span></li>
+          <li><span class="d-title">雨夜便利店·第3集</span><span class="d-summary">热饮柜选择过程8分钟，含店员补货片段与关东煮价签特写</span><span class="d-time">2026-10-30</span></li>
+          <li><span class="d-title">城市漫步·第10条</span><span class="d-summary">老巷子理发店转灯，隔玻璃拍摄六分钟，反光叠水果摊灯箱</span><span class="d-time">2026-10-29</span></li>
+          <li><span class="d-title">周末骑行·湘江往返</span><span class="d-summary">14分钟，胸挂+车把双机位，傍晚光线变化完整记录</span><span class="d-time">2026-10-28</span></li>
+          <li><span class="d-title">深夜食堂·第8集</span><span class="d-summary">番茄蛋汤配隔夜饭，蒸汽模糊镜头未重拍，空碗定格20秒</span><span class="d-time">2026-10-26</span></li>
+          <li><span class="d-title">雨天窗口·第2集</span><span class="d-summary">公交站台固定机位40分钟，两次平移，站牌线路信息可读</span><span class="d-time">2026-10-25</span></li>
+        </ul>
+      </section>
+
+      <!-- 4. 分类入口 -->
+      <section class="section-block" id="categories">
+        <h2>分类入口</h2>
+        <p class="section-desc">按场景和系列类型划分的8个查找方向</p>
+        <div class="category-grid">
+          <a href="/#featured" class="category-item">
+            <span class="cat-icon">🌧️</span>
+            <div class="cat-name">雨夜便利店</div>
+            <div class="cat-count">4集 · 更新中</div>
+          </a>
+          <a href="/#featured" class="category-item">
+            <span class="cat-icon">🚶</span>
+            <div class="cat-name">城市漫步</div>
+            <div class="cat-count">12条 · 三城</div>
+          </a>
+          <a href="/#featured" class="category-item">
+            <span class="cat-icon">🚲</span>
+            <div class="cat-name">周末骑行</div>
+            <div class="cat-count">7条 · 长沙为主</div>
+          </a>
+          <a href="/#featured" class="category-item">
+            <span class="cat-icon">🍜</span>
+            <div class="cat-name">深夜食堂</div>
+            <div class="cat-count">9集 · 出租屋厨房</div>
+          </a>
+          <a href="/#featured" class="category-item">
+            <span class="cat-icon">🪟</span>
+            <div class="cat-name">雨天窗口</div>
+            <div class="cat-count">3集 · 固定机位</div>
+          </a>
+          <a href="/#featured" class="category-item">
+            <span class="cat-icon">🏠</span>
+            <div class="cat-name">出租屋日常</div>
+            <div class="cat-count">2集 · 更新中</div>
+          </a>
+          <a href="/#featured" class="category-item">
+            <span class="cat-icon">🌃</span>
+            <div class="cat-name">夜市收摊</div>
+            <div class="cat-count">5条 · 长沙/成都</div>
+          </a>
+          <a href="/#featured" class="category-item">
+            <span class="cat-icon">🎧</span>
+            <div class="cat-name">无旁白长镜头</div>
+            <div class="cat-count">14条 · 同期声</div>
+          </a>
+        </div>
+      </section>
+
+      <!-- 5. 深度解析 -->
+      <section class="section-block" id="deep-dive">
+        <h2>深度解析：生活随拍条目的判断维度</h2>
+        <div class="deep-dive">
+          <h3>长镜头条目的“耐看”来自哪里</h3>
+          <p>以《城市漫步·第10条》为例，8分50秒里镜头基本没离开理发店门口。这类条目能不能看下去，取决于画面里有没有持续变化的信息：转灯在转、晾衣杆上的衣服被风吹动、店主修面的手势在换。三个变化源同时存在时，固定机位就不显得闷。反过来，如果只有一个静态招牌，时长超过5分钟就容易走神。</p>
+          <p>可核对的结构是：画面变化源数量、声音变化源数量、镜头是否移动。第10条的画面变化源有2个（转灯、晾衣杆），声音变化源有1个（店内收音机），镜头移动1次。同期《雨天窗口·第2集》画面变化源是撑伞行人和公交车进出站，声音变化源是雨声和报站声，镜头移动2次。两组数据放在一起看，后者的信息密度更高，但前者的场景更集中。</p>
+
+          <h3>夜景画质差异的具体来源</h3>
+          <p>《雨夜便利店》系列用手机拍摄，第3集和第4集的画质差异集中在三个环节：一是便利店门口的灯光色温，第3集是暖白，第4集偏冷白，手机自动白平衡在冷白下容易偏绿；二是玻璃反光，第4集镜头离玻璃更近，反光叠在关东煮锅上，部分画面看不清锅里的东西；三是收银台屏幕的频闪，第3集有约2秒的频闪条纹，第4集调整了角度后消失。</p>
+          <div class="highlight-box">判断一条夜景条目画质是否可用，可以拆成：白平衡是否漂移、反光是否遮挡主体、频闪是否出现、噪点是否盖过细节。四项里超过两项出问题，这条素材基本只能做短片段用。</div>
+
+          <h3>系列条目和单条散片的取舍</h3>
+          <p>系列条目（如雨夜便利店4集、深夜食堂9集）的优势是场景固定、可对比，比如第8集和第9集都在出租屋厨房拍，灶台位置、锅具、调料摆放基本一致，能看出拍摄者对流程的熟悉程度在上升。单条散片（如《城市漫步·第12条》旧书店）胜在场景新鲜，但缺少前后参照，判断成本更高。</p>
+          <p>从2026年10月的条目看，系列条目的平均完播率比散片高出一截，但散片的分享次数更集中。两条路径没有绝对优劣，取决于观看目的是连续跟看还是单次尝鲜。</p>
+
+          <h3>同期声与背景音乐的比例控制</h3>
+          <p>《周末骑行·湘江往返》全程没有加背景音乐，风声、链条声、轮毂声都在。14分钟里，风声突然变大的位置出现在过桥段，和画面里江面开阔的节点吻合。这类处理在骑行条目里比较常见，好处是环境信息完整，代价是手机外放时细节容易被环境噪音盖住。</p>
+          <p>《深夜食堂·第9集》则保留了锅铲碰铁锅的声音，但把抽油烟机的低频做了压低处理。判断标准不是“有没有音乐”，而是音乐或降噪有没有盖掉本应听到的操作声。第9集里倒酱油时瓶口的咕嘟声仍然清晰，说明处理是克制的。</p>
+        </div>
+      </section>
+
+      <!-- 6. 体验指南 -->
+      <section class="section-block" id="guide">
+        <h2>体验指南：从哪一条开始看</h2>
+        <p class="section-desc">按观看目的和可用时间的顺序建议</p>
+        <ol class="guide-steps">
+          <li><strong>先看单集时长和场景标签。</strong>时间紧的话，从7分钟以内的条目入手，比如《出租屋日常·第1集》5分50秒、《深夜食堂·第8集》6分10秒。想感受完整场景再选12分钟以上的长条目。</li>
+          <li><strong>按系列顺序看还是按场景挑。</strong>雨夜便利店系列建议按集数顺序看，第3集到第4集能看出白平衡和机位的变化。城市漫步系列适合按城市挑，成都和长沙的街景差异明显。</li>
+          <li><strong>判断一条值不值得投入时间，看三样东西。</strong>画面里有没有持续变化的信息、声音是否保留操作细节、单集是否围绕一个具体动作展开。三样占两样，基本可以看完。</li>
+          <li><strong>比较同类条目时，先看拍摄日期。</strong>2026年10月之后的条目普遍在夜景白平衡上有改善，10月中旬之前的夜景条目频闪和偏色出现频率更高。</li>
+          <li><strong>不要跳过收尾片段。</strong>深夜食堂系列的洗锅、擦灶台片段往往包含最自然的动作节奏，雨夜便利店第4集吃完关东煮后收拾桌面的40秒也是同类场景里少见的收尾。</li>
+        </ol>
+      </section>
+
+      <!-- 7. FAQ -->
+      <section class="section-block" id="faq">
+        <h2>常见问题</h2>
+        <div class="faq-list">
+          <details>
+            <summary>雨夜便利店第4集的关东煮是几点买的？</summary>
+            <div class="faq-answer">拍摄时间是凌晨两点前后，画面里收银台屏幕右下角显示02:07，选关东煮的片段大约在02:09到02:11之间。便利店位于杭州文三路，门牌在推门进店的镜头里能看清前两位。</div>
+          </details>
+          <details>
+            <summary>城市漫步系列一共多少条，都在哪些城市？</summary>
+            <div class="faq-answer">截至2026年11月8日共12条，成都5条、长沙4条、杭州3条。第10条老巷子理发店和第12条旧书店都在成都建设路周边，步行距离大约1.2公里。</div>
+          </details>
+          <details>
+            <summary>深夜食堂第9集的炒面用了哪些调料？</summary>
+            <div class="faq-answer">画面里能看清的是生抽、老抽、白糖和包菜，鸡蛋在炒面之前单独炒好盛出。生抽用量大约两瓷勺，老抽半勺，白糖一小撮。调料瓶上的标签在特写镜头里可辨认。</div>
+          </details>
+          <details>
+            <summary>周末骑行湘江往返的路线具体怎么走？</summary>
+            <div class="faq-answer">从橘子洲大桥西侧上桥，沿湘江西岸绿道往南骑到渔人码头折返，全程约15公里。骑行片段里经过三个驿站，第二个驿站有自动售货机，画面中出现了买水的动作。</div>
+          </details>
+          <details>
+            <summary>雨天窗口系列和城市漫步的雨天条目有什么区别？</summary>
+            <div class="faq-answer">雨天窗口是固定机位，镜头基本不动，记录的是同一位置随时间发生的变化；城市漫步的雨天条目是边走边拍，视角在移动。前者更适合看细节，后者更适合看街景全貌。</div>
+          </details>
+          <details>
+            <summary>出租屋日常系列的拍摄设备是什么？</summary>
+            <div class="faq-answer">从画面视角和画幅看是手机固定俯拍，第2集抄书片段里能看到手机支架的底座边缘。没有外接麦克风，冰箱压缩机启动声和笔尖摩擦声都是手机直接录的。</div>
+          </details>
+        </div>
+      </section>
+
+      <!-- 8. 用户评论 -->
+      <section class="section-block" id="comments">
+        <h2>用户评论</h2>
+        <p class="section-desc">来自条目页面的16条留言</p>
+        <div class="comment-grid">
+          <div class="comment-card"><div class="comment-user"><span class="avatar">阿</span><span class="nickname">阿汤走夜路</span><span class="comment-time">11-08</span></div>第4集关东煮那段，镜头凑太近，锅里东西看不太清。不过收银提示音一响我就想起自己家楼下那家。</div>
+          <div class="comment-card"><div class="comment-user"><span class="avatar">麦</span><span class="nickname">麦麦不喝茶</span><span class="comment-time">11-07</span></div>旧书店那三分钟对话没剪掉是对的，店主说书价那段比后面走路有意思多了。</div>
+          <div class="comment-card"><div class="comment-user"><span class="avatar">老</span><span class="nickname">老周骑车</span><span class="comment-time">11-06</span></div>湘江往返那条后半段车把机位太颠了，看久了有点晕。风景是真好。</div>
+          <div class="comment-card"><div class="comment-user"><span class="avatar">青</span><span class="nickname">青椒炒蛋不放糖</span><span class="comment-time">11-05</span></div>深夜食堂第9集那个洗锅的40秒我看了两遍，说不清为什么好看。</div>
+          <div class="comment-card"><div class="comment-user"><span class="avatar">半</span><span class="nickname">半页练习本</span><span class="comment-time">11-05</span></div>抄书那集，书是城南旧事吧？英子那段我认出来了。</div>
+          <div class="comment-card"><div class="comment-user"><span class="avatar">西</span><span class="nickname">西门吹空调</span><span class="comment-time">11-04</span></div>番茄蛋汤那集蒸汽糊镜头居然没重拍，行吧，反而有点真实。</div>
+          <div class="comment-card"><div class="comment-user"><span class="avatar">小</span><span class="nickname">小满在杭州</span><span class="comment-time">11-03</span></div>文三路那家便利店我去过，关东煮确实凌晨还在卖。</div>
+          <div class="comment-card"><div class="comment-user"><span class="avatar">一</span><span class="nickname">一条咸鱼干</span><span class="comment-time">11-02</span></div>夜市收摊那条画面太暗了，噪点糊成一片，但摊主收凳子的动作很利索。</div>
+          <div class="comment-card"><div class="comment-user"><span class="avatar">南</span><span class="nickname">南门口阿海</span><span class="comment-time">11-01</span></div>四方坪那个点我去吃过，收摊时候确实这样，塑料凳摞得比人高。</div>
+          <div class="comment-card"><div class="comment-user"><span class="avatar">午</span><span class="nickname">午后拿铁</span><span class="comment-time">10-31</span></div>热饮柜前站十分钟，这也能拍一集？还真看完了。</div>
+          <div class="comment-card"><div class="comment-user"><span class="avatar">陈</span><span class="nickname">陈年旧磁带</span><span class="comment-time">10-30</span></div>雨天窗口第二集，站牌线路我暂停看了，是杭州的。</div>
+          <div class="comment-card"><div class="comment-user"><span class="avatar">北</span><span class="nickname">北岸没有风</span><span class="comment-time">10-29</span></div>理发店转灯那条，玻璃反光叠水果摊灯箱，构图有点乱，但老巷子的味道对了。</div>
+          <div class="comment-card"><div class="comment-user"><span class="avatar">大</span><span class="nickname">大脸猫爱吃鱼</span><span class="comment-time">10-28</span></div>骑行清晨六点那条，路灯熄灭的瞬间抓得挺好。</div>
+          <div class="comment-card"><div class="comment-user"><span class="avatar">七</span><span class="nickname">七号桥洞</span><span class="comment-time">10-27</span></div>感觉这几个系列画质参差不齐，有的夜景偏绿，有的还行。</div>
+          <div class="comment-card"><div class="comment-user"><span class="avatar">不</span><span class="nickname">不睡觉的猫</span><span class="comment-time">10-26</span></div>前两天下雨，路过便利店就想起来看第3集，有点上头。</div>
+          <div class="comment-card"><div class="comment-user"><span class="avatar">路</span><span class="nickname">路口卖煎饼</span><span class="comment-time">10-25</span></div>城市漫步这个系列要是能标清楚每条在哪个地铁站附近就好了，有几个地方想自己去走一遍。</div>
+        </div>
+      </section>
+
+      <!-- 9. 相关资讯 -->
+      <section class="section-block" id="news">
+        <h2>相关资讯</h2>
+        <ul class="news-list">
+          <li>
+            <div class="news-header"><span class="news-title">长沙四方坪夜市管理方调整收摊时间至凌晨一点</span><span class="news-date">2026-11-05</span></div>
+            <p class="news-summary">调整后摊主需在凌晨一点前清完摊位，较此前提前半小时。《城市漫步·第11条》拍摄的收摊场景发生在十一点半，未受新规影响，但后续同类条目的拍摄时段可能需要前移。</p>
+          </li>
+          <li>
+            <div class="news-header"><span class="news-title">杭州文三路便利店夜间关东煮供应延长至凌晨三点</span><span class="news-date">2026-11-03</span></div>
+            <p class="news-summary">该店从11月1日起将夜间关东煮供应时段延长一小时。《雨夜便利店·第4集》拍摄时供应截止到两点，第5集如果在该店取景，可拍的时段窗口相应变宽。</p>
+          </li>
+          <li>
+            <div class="news-header"><span class="news-title">成都建设路旧书店街片区启动立面改造</span><span class="news-date">2026-10-30</span></div>
+            <p class="news-summary">改造范围涉及沿街12家店铺的外墙和招牌，工期预计45天。第12条拍摄的旧书店在改造名单内，门头招牌11月中旬起可能被围挡遮挡，后续补拍需调整机位。</p>
+          </li>
+          <li>
+            <div class="news-header"><span class="news-title">湘江西岸绿道渔人码头段新增两处饮水点</span><span class="news-date">2026-10-27</span></div>
+            <p class="news-summary">新增饮水点位于骑行路线折返点附近，10月25日投入使用。此前条目中买水的自动售货机仍在，饮水点开放后骑行中途补水多了一个选择。</p>
+          </li>
+          <li>
+            <div class="news-header"><span class="news-title">拱墅区合租房厨房改造补贴申请截止11月底</span><span class="news-date">2026-10-24</span></div>
+            <p class="news-summary">补贴覆盖灶台更换和排烟改造，最高2000元。深夜食堂系列使用的出租屋厨房暂未申请，若后续改造，第8集和第9集里的灶台布局将无法复现。</p>
+          </li>
+          <li>
+            <div class="news-header"><span class="news-title">杭州公交站台电子站牌11月起显示到站秒数</span><span class="news-date">2026-10-21</span></div>
+            <p class="news-summary">首批覆盖文三路、天目山路等32个站点。雨天窗口系列常用的公交站台不在首批名单内，站牌信息展示方式短期内不变。</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 10. 相关推荐 -->
+      <section class="section-block" id="recommend">
+        <h2>相关推荐</h2>
+        <p class="section-desc">按具体场景和拍摄手法挑选的8个方向</p>
+        <div class="recommend-tags">
+          <a href="/#featured">雨夜便利店第2集：热饮柜前</a>
+          <a href="/#featured">城市漫步·第9条：菜市场早市</a>
+          <a href="/#featured">深夜食堂第7集：泡面加蛋</a>
+          <a href="/#featured">出租屋日常·第3集预告</a>
+          <a href="/#featured">无旁白长镜头·桥洞系列</a>
+          <a href="/#featured">周末骑行·江边夜骑</a>
+          <a href="/#featured">雨天窗口·第1集：窗台水珠</a>
+          <a href="/#featured">城市漫步·第8条：旧货市场</a>
+        </div>
+      </section>
+
+      <!-- 11. 创作者证言 -->
+      <section class="section-block" id="testimonials">
+        <h2>创作者说</h2>
+        <div class="testimonial-panel">
+          <div class="testimonial-item">
+            <span class="quote-mark">“</span>
+            <p>拍雨夜便利店第4集的时候，玻璃反光一直解决不了。后来干脆把机位往侧面挪了半米，反光叠不到锅上，但收银台屏幕进了画面。取舍就是这样，没有两全。</p>
+            <div class="author">叉喔 <span class="author-role">· 雨夜便利店系列拍摄者</span></div>
+          </div>
+          <div class="testimonial-item">
+            <span class="quote-mark">“</span>
+            <p>城市漫步第12条旧书店那段，本来只想拍三分钟，店主聊起书价就多待了十几分钟。最后剪进去三分钟，已经够把书价怎么定说清楚了。</p>
+            <div class="author">情深 <span class="author-role">· 城市漫步系列剪辑</span></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 右侧辅助栏 -->
+    <aside class="side-panel">
+      <div class="side-card">
+        <h3>条目热度榜</h3>
+        <ol class="rank-list">
+          <li><a href="/#featured">雨夜便利店·第4集：凌晨两点的关东煮</a></li>
+          <li><a href="/#featured">深夜食堂·第9集：出租屋的酱油炒面</a></li>
+          <li><a href="/#featured">城市漫步·第12条：从天桥走到旧书店</a></li>
+          <li><a href="/#featured">雨夜便利店·第3集：热饮柜前站了十分钟</a></li>
+          <li><a href="/#featured">城市漫步·第11条：夜市收摊前的半小时</a></li>
+        </ol>
+      </div>
+      <div class="side-card">
+        <h3>最近更新</h3>
+        <ul class="update-list">
+          <li><span>雨夜便利店·第4集</span><span class="date-tag">11-08</span></li>
+          <li><span>城市漫步新增12条</span><span class="date-tag">11-06</span></li>
+          <li><span>出租屋日常·第2集</span><span class="date-tag">11-04</span></li>
+          <li><span>深夜食堂·第9集</span><span class="date-tag">11-02</span></li>
+          <li><span>城市漫步·第11条</span><span class="date-tag">11-01</span></li>
+        </ul>
+      </div>
+      <div class="side-card">
+        <h3>投稿与互动</h3>
+        <p style="font-size:13px;color:var(--color-text-secondary);line-height:1.6;margin-bottom:10px;">有自己拍的生活随拍条目？可以提交视频链接和场景说明，审核后进入对应系列。</p>
+        <button class="btn-submit" style="width:100%;" id="sideSubmitBtn">提交条目</button>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- 页尾 -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">91情深叉喔vlog合集</div>
+        <p>收录2026年9月至11月的生活随拍条目，覆盖雨夜便利店、城市漫步、深夜食堂、周末骑行等系列，按集数和场景分类整理。</p>
+      </div>
+      <div class="footer-col">
+        <h4>系列入口</h4>
+        <ul>
+          <li><a href="/#featured">雨夜便利店</a></li>
+          <li><a href="/#featured">城市漫步</a></li>
+          <li><a href="/#featured">深夜食堂</a></li>
+          <li><a href="/#featured">周末骑行</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>内容类型</h4>
+        <ul>
+          <li><a href="/#categories">无旁白长镜头</a></li>
+          <li><a href="/#categories">固定机位记录</a></li>
+          <li><a href="/#categories">夜市收摊</a></li>
+          <li><a href="/#categories">出租屋日常</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>互动</h4>
+        <ul>
+          <li><a href="/#testimonials">创作者说</a></li>
+          <li><a href="/#comments">用户评论</a></li>
+          <li><a href="/#faq">常见问题</a></li>
+          <li><a href="#" id="footerSubmit">投稿入口</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>内容覆盖时间跨度：2026年9月—11月8日 · 条目类型：系列合集、单条散片、固定机位记录 · 更新节奏：每周2—4条</span>
+      <span>© 2026 91情深叉喔vlog合集 · 条目信息为示例整理，不构成播放指引</span>
+    </div>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="回到顶部">↑</button>
+
+<script>
+  // 移动端菜单
+  const hamburger = document.getElementById('hamburgerBtn');
+  const mainNav = document.getElementById('mainNav');
+  const overlay = document.getElementById('overlay');
+
+  function closeMenu() {
+    mainNav.classList.remove('open');
+    overlay.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+  }
+
+  hamburger.addEventListener('click', () => {
+    const isOpen = mainNav.classList.toggle('open');
+    overlay.classList.toggle('active', isOpen);
+    hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+
+  overlay.addEventListener('click', closeMenu);
+
+  mainNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 740) closeMenu();
+    });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  // 回到顶部
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    backToTop.classList.toggle('show', window.scrollY > window.innerHeight);
+  });
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // 搜索过滤（本地可见内容查找）
+  const searchInput = document.getElementById('searchInput');
+  const searchBtn = document.getElementById('searchBtn');
+  const cards = document.querySelectorAll('.content-card');
+  const dynamicItems = document.querySelectorAll('.dynamic-list li');
+  const newsItems = document.querySelectorAll('.news-list li');
+  const commentCards = document.querySelectorAll('.comment-card');
+
+  function performSearch() {
+    const q = searchInput.value.trim().toLowerCase();
+    if (!q) {
+      cards.forEach(c => c.style.display = '');
+      dynamicItems.forEach(d => d.style.display = '');
+      newsItems.forEach(n => n.style.display = '');
+      commentCards.forEach(c => c.style.display = '');
+      return;
+    }
+    cards.forEach(c => {
+      const text = c.textContent.toLowerCase();
+      c.style.display = text.includes(q) ? '' : 'none';
+    });
+    dynamicItems.forEach(d => {
+      const text = d.textContent.toLowerCase();
+      d.style.display = text.includes(q) ? '' : 'none';
+    });
+    newsItems.forEach(n => {
+      const text = n.textContent.toLowerCase();
+      n.style.display = text.includes(q) ? '' : 'none';
+    });
+    commentCards.forEach(c => {
+      const text = c.textContent.toLowerCase();
+      c.style.display = text.includes(q) ? '' : 'none';
+    });
+  }
+
+  searchBtn.addEventListener('click', performSearch);
+  searchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') performSearch();
+  });
+
+  // 投稿按钮提示
+  function handleSubmit() {
+    alert('投稿入口：请准备视频链接、场景说明和拍摄日期，发送至合集编辑邮箱。示例页面仅作入口示意。');
+  }
+  document.getElementById('submitBtn').addEventListener('click', handleSubmit);
+  document.getElementById('sideSubmitBtn').addEventListener('click', handleSubmit);
+  document.getElementById('footerSubmit').addEventListener('click', (e) => {
+    e.preventDefault();
+    handleSubmit();
+  });
+
+  // 侧栏频道高亮（简单滚动监听）
+  const sections = document.querySelectorAll('.section-block[id]');
+  const channelLinks = document.querySelectorAll('.channel-list a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(sec => {
+      const top = sec.offsetTop - 140;
+      if (window.scrollY >= top) current = sec.id;
+    });
+    channelLinks.forEach(link => {
+      link.classList.toggle('active', link.getAttribute('href') === '/#' + current);
+    });
+  });
+</script>
+
+<!-- 结构化数据 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "91情深叉喔vlog合集",
+  "description": "生活随拍视频条目聚合，包含雨夜便利店、城市漫步、深夜食堂、周末骑行等系列条目与更新动态。",
+  "about": {
+    "@type": "Thing",
+    "name": "生活随拍vlog合集"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "雨夜便利店第4集的关东煮是几点买的？",
+      "acceptedAnswer": { "@type": "Answer", "text": "拍摄时间是凌晨两点前后，画面里收银台屏幕右下角显示02:07，选关东煮的片段大约在02:09到02:11之间。便利店位于杭州文三路。" }
+    },
+    {
+      "@type": "Question",
+      "name": "城市漫步系列一共多少条，都在哪些城市？",
+      "acceptedAnswer": { "@type": "Answer", "text": "截至2026年11月8日共12条，成都5条、长沙4条、杭州3条。" }
+    },
+    {
+      "@type": "Question",
+      "name": "深夜食堂第9集的炒面用了哪些调料？",
+      "acceptedAnswer": { "@type": "Answer", "text": "画面里能看清的是生抽、老抽、白糖和包菜，鸡蛋在炒面之前单独炒好盛出。生抽用量大约两瓷勺，老抽半勺，白糖一小撮。" }
+    },
+    {
+      "@type": "Question",
+      "name": "周末骑行湘江往返的路线具体怎么走？",
+      "acceptedAnswer": { "@type": "Answer", "text": "从橘子洲大桥西侧上桥，沿湘江西岸绿道往南骑到渔人码头折返，全程约15公里。" }
+    },
+    {
+      "@type": "Question",
+      "name": "雨天窗口系列和城市漫步的雨天条目有什么区别？",
+      "acceptedAnswer": { "@type": "Answer", "text": "雨天窗口是固定机位，镜头基本不动，记录的是同一位置随时间发生的变化；城市漫步的雨天条目是边走边拍，视角在移动。" }
+    },
+    {
+      "@type": "Question",
+      "name": "出租屋日常系列的拍摄设备是什么？",
+      "acceptedAnswer": { "@type": "Answer", "text": "从画面视角和画幅看是手机固定俯拍，第2集抄书片段里能看到手机支架的底座边缘。没有外接麦克风。" }
+    }
+  ]
+}
+</script>
+</body>
+                                       </html>
