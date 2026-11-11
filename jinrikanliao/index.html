@@ -1,0 +1,1833 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>今日看料 - 实时更新与深度聚合</title>
+  <meta name="description" content="今日看料汇聚每日热点、深度解析与用户互动内容，涵盖社会话题、科技动态、文化解读等方向，适合关注时效热点与多角度分析的读者阅读。">
+  <meta name="keywords" content="今日看料">
+  <style>
+    /* ---------- 全局变量 ---------- */
+    :root {
+      --color-primary: #1e3c5c;
+      --color-primary-light: #2b5a80;
+      --color-primary-dark: #0f2a3e;
+      --color-accent: #e07b39;
+      --color-accent-light: #f2a970;
+      --color-bg: #f5f7fa;
+      --color-surface: #ffffff;
+      --color-text-primary: #1a2b3c;
+      --color-text-secondary: #4a5e6e;
+      --color-text-tertiary: #7c8e9c;
+      --color-divider: #e2e8f0;
+      --radius-card: 14px;
+      --radius-button: 10px;
+      --radius-tag: 20px;
+      --radius-banner: 18px;
+      --shadow-default: 0 4px 12px rgba(0, 20, 30, 0.06);
+      --shadow-hover: 0 10px 24px rgba(0, 20, 30, 0.12);
+      --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Sans SC', sans-serif;
+      --sticky-offset: 120px; /* 公告条+页头预估高度 */
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: var(--sticky-offset);
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-text-primary);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* ---------- 吸顶公告条 + 页头 ---------- */
+    .sticky-wrapper {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.86);
+      border-bottom: 1px solid var(--color-divider);
+    }
+
+    .announcement {
+      background: var(--color-primary-dark);
+      color: #eef4fa;
+      font-size: 0.82rem;
+      padding: 6px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .announcement-inner {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+      animation: scroll-ticker 18s linear infinite;
+      width: max-content;
+    }
+
+    .announcement-inner:hover {
+      animation-play-state: paused;
+    }
+
+    .announcement .brand-badge {
+      font-weight: 700;
+      color: #fff;
+      background: var(--color-accent);
+      padding: 2px 10px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+
+    .announcement .ann-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .announcement .ann-date {
+      color: #b8c9da;
+      font-size: 0.75rem;
+    }
+
+    @keyframes scroll-ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .announcement-inner {
+        animation: none;
+      }
+    }
+
+    .header {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .logo-svg {
+      width: 34px;
+      height: 34px;
+    }
+
+    .logo-text {
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--color-primary-dark);
+      letter-spacing: -0.3px;
+    }
+
+    .nav-main {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .nav-main a {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--color-text-secondary);
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-main a:hover,
+    .nav-main a:focus-visible {
+      background: var(--color-primary-light);
+      color: #fff;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .search-toggle {
+      background: none;
+      border: 1px solid var(--color-divider);
+      border-radius: 24px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .search-toggle:hover {
+      border-color: var(--color-primary-light);
+    }
+
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.6rem;
+      cursor: pointer;
+      color: var(--color-primary-dark);
+      padding: 4px;
+    }
+
+    /* 移动端导航展开 */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 280px;
+      height: 100vh;
+      background: #fff;
+      box-shadow: -6px 0 24px rgba(0,0,0,0.12);
+      z-index: 200;
+      padding: 28px 20px;
+      flex-direction: column;
+      gap: 16px;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+
+    .mobile-nav.open {
+      transform: translateX(0);
+      display: flex;
+    }
+
+    .mobile-nav a {
+      font-size: 1rem;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--color-divider);
+    }
+
+    .mobile-nav .close-btn {
+      align-self: flex-end;
+      background: none;
+      border: none;
+      font-size: 1.6rem;
+      cursor: pointer;
+      color: var(--color-text-secondary);
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 150;
+    }
+
+    .overlay.active {
+      display: block;
+    }
+
+    /* ---------- 容器 ---------- */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---------- 首屏 ---------- */
+    .hero {
+      background: linear-gradient(135deg, #dce9f5 0%, #eef4fa 100%);
+      border-radius: var(--radius-banner);
+      margin: 24px auto;
+      max-width: 1400px;
+      padding: 44px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      flex: 1 1 55%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      color: var(--color-primary-dark);
+      letter-spacing: -1px;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .hero-desc {
+      font-size: 1rem;
+      color: var(--color-text-secondary);
+      max-width: 540px;
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: #fff;
+      padding: 10px 28px;
+      border-radius: var(--radius-button);
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.2s, transform 0.2s;
+      display: inline-block;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: var(--color-primary-light);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--color-primary);
+      color: var(--color-primary);
+      padding: 10px 28px;
+      border-radius: var(--radius-button);
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: background 0.2s, color 0.2s;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .btn-outline:hover {
+      background: var(--color-primary);
+      color: #fff;
+    }
+
+    .hero-visual {
+      flex: 0 0 300px;
+      height: 220px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-visual svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* ---------- 三栏布局 ---------- */
+    .layout-three-col {
+      display: grid;
+      grid-template-columns: 180px 1fr 260px;
+      gap: 28px;
+      margin: 36px 0 48px;
+    }
+
+    /* 左侧频道索引 */
+    .channel-sidebar {
+      position: sticky;
+      top: var(--sticky-offset);
+      align-self: start;
+      background: var(--color-surface);
+      border-radius: var(--radius-card);
+      padding: 18px 12px;
+      box-shadow: var(--shadow-default);
+    }
+
+    .channel-sidebar h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--color-text-tertiary);
+      margin-bottom: 12px;
+      padding-left: 8px;
+    }
+
+    .channel-sidebar ul {
+      list-style: none;
+    }
+
+    .channel-sidebar li a {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: var(--color-text-secondary);
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .channel-sidebar li a:hover,
+    .channel-sidebar li a:focus-visible {
+      background: #eef4fa;
+      color: var(--color-primary);
+    }
+
+    /* 中间主内容 */
+    .main-content {
+      min-width: 0;
+    }
+
+    /* 右侧辅助栏 */
+    .aux-sidebar {
+      position: sticky;
+      top: var(--sticky-offset);
+      align-self: start;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .side-card {
+      background: var(--color-surface);
+      border-radius: var(--radius-card);
+      padding: 18px 16px;
+      box-shadow: var(--shadow-default);
+    }
+
+    .side-card h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: var(--color-primary-dark);
+    }
+
+    .side-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .side-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+    }
+
+    .side-list .rank-num {
+      font-weight: 800;
+      color: var(--color-accent);
+      min-width: 18px;
+    }
+
+    /* ---------- 板块通用 ---------- */
+    .section {
+      margin-bottom: 42px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .section-header h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-primary-dark);
+      letter-spacing: -0.3px;
+    }
+
+    .section-header .more-link {
+      font-size: 0.85rem;
+      color: var(--color-primary-light);
+      font-weight: 500;
+    }
+
+    .section-header .more-link:hover {
+      text-decoration: underline;
+    }
+
+    /* 概览段落 */
+    .overview-text {
+      background: var(--color-surface);
+      border-radius: var(--radius-card);
+      padding: 24px 28px;
+      box-shadow: var(--shadow-default);
+      font-size: 0.95rem;
+      color: var(--color-text-secondary);
+      line-height: 1.8;
+    }
+
+    .overview-text p + p {
+      margin-top: 14px;
+    }
+
+    /* 精选卡片网格 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .content-card {
+      background: var(--color-surface);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-default);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .content-card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+    }
+
+    .card-body {
+      padding: 14px 14px 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .card-type {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      letter-spacing: 0.5px;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-primary-dark);
+      line-height: 1.4;
+    }
+
+    .card-desc {
+      font-size: 0.82rem;
+      color: var(--color-text-secondary);
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+
+    .tag {
+      background: #eef4fa;
+      border-radius: var(--radius-tag);
+      padding: 2px 10px;
+      font-size: 0.7rem;
+      color: var(--color-primary-light);
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .card-meta {
+      font-size: 0.72rem;
+      color: var(--color-text-tertiary);
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+    }
+
+    /* 动态列表 */
+    .update-list {
+      background: var(--color-surface);
+      border-radius: var(--radius-card);
+      padding: 8px 0;
+      box-shadow: var(--shadow-default);
+    }
+
+    .update-item {
+      display: flex;
+      gap: 16px;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--color-divider);
+      font-size: 0.9rem;
+      align-items: flex-start;
+    }
+
+    .update-item:last-child {
+      border-bottom: none;
+    }
+
+    .update-time {
+      color: var(--color-text-tertiary);
+      font-size: 0.78rem;
+      white-space: nowrap;
+      min-width: 70px;
+    }
+
+    .update-title {
+      font-weight: 600;
+      color: var(--color-primary-dark);
+      margin-bottom: 2px;
+    }
+
+    .update-summary {
+      font-size: 0.82rem;
+      color: var(--color-text-secondary);
+    }
+
+    /* 分类入口 */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .category-item {
+      background: var(--color-surface);
+      border-radius: var(--radius-card);
+      padding: 16px 12px;
+      text-align: center;
+      box-shadow: var(--shadow-default);
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--color-primary-dark);
+      transition: background 0.2s, transform 0.15s;
+      display: block;
+    }
+
+    .category-item:hover {
+      background: #eef4fa;
+      transform: translateY(-2px);
+    }
+
+    .category-item small {
+      display: block;
+      font-weight: 400;
+      font-size: 0.72rem;
+      color: var(--color-text-tertiary);
+      margin-top: 4px;
+    }
+
+    /* 深度解析 */
+    .deep-dive {
+      background: var(--color-surface);
+      border-radius: var(--radius-card);
+      padding: 28px 32px;
+      box-shadow: var(--shadow-default);
+    }
+
+    .deep-dive h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--color-primary-dark);
+      margin-bottom: 20px;
+    }
+
+    .deep-dive h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin: 22px 0 10px;
+    }
+
+    .deep-dive p {
+      font-size: 0.94rem;
+      color: var(--color-text-secondary);
+      line-height: 1.8;
+      margin-bottom: 10px;
+    }
+
+    .deep-dive ul {
+      padding-left: 20px;
+      margin: 10px 0;
+      font-size: 0.92rem;
+      color: var(--color-text-secondary);
+      line-height: 1.8;
+    }
+
+    .deep-dive li {
+      margin-bottom: 6px;
+    }
+
+    /* 体验指南 */
+    .guide-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .guide-step {
+      background: var(--color-surface);
+      border-radius: var(--radius-card);
+      padding: 18px 22px;
+      box-shadow: var(--shadow-default);
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--color-accent);
+      line-height: 1;
+      min-width: 36px;
+    }
+
+    .guide-step h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--color-primary-dark);
+      margin-bottom: 4px;
+    }
+
+    .guide-step p {
+      font-size: 0.88rem;
+      color: var(--color-text-secondary);
+    }
+
+    /* FAQ */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    details {
+      background: var(--color-surface);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-default);
+      padding: 0 20px;
+    }
+
+    summary {
+      padding: 16px 0;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      color: var(--color-primary-dark);
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: "+";
+      font-size: 1.2rem;
+      color: var(--color-text-tertiary);
+      transition: transform 0.2s;
+    }
+
+    details[open] summary::after {
+      content: "−";
+    }
+
+    details p {
+      padding: 0 0 18px;
+      font-size: 0.9rem;
+      color: var(--color-text-secondary);
+      line-height: 1.7;
+    }
+
+    /* 评论 */
+    .comment-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .comment-item {
+      background: var(--color-surface);
+      border-radius: var(--radius-card);
+      padding: 14px 18px;
+      box-shadow: var(--shadow-default);
+      font-size: 0.88rem;
+    }
+
+    .comment-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .comment-nick {
+      font-weight: 700;
+      color: var(--color-primary-dark);
+      font-size: 0.85rem;
+    }
+
+    .comment-badge {
+      background: #eef4fa;
+      border-radius: 12px;
+      padding: 1px 8px;
+      font-size: 0.68rem;
+      color: var(--color-primary-light);
+    }
+
+    .comment-text {
+      color: var(--color-text-secondary);
+      line-height: 1.6;
+    }
+
+    /* 资讯列表 */
+    .news-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      background: var(--color-surface);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-default);
+      overflow: hidden;
+    }
+
+    .news-item {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--color-divider);
+    }
+
+    .news-item:last-child {
+      border-bottom: none;
+    }
+
+    .news-title {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--color-primary-dark);
+      margin-bottom: 4px;
+    }
+
+    .news-date {
+      font-size: 0.75rem;
+      color: var(--color-text-tertiary);
+      margin-bottom: 4px;
+    }
+
+    .news-summary {
+      font-size: 0.85rem;
+      color: var(--color-text-secondary);
+    }
+
+    /* 相关推荐标签索引 */
+    .tag-index {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tag-index .tag {
+      padding: 6px 16px;
+      font-size: 0.82rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-divider);
+      box-shadow: var(--shadow-default);
+      color: var(--color-text-secondary);
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .tag-index .tag:hover {
+      background: #eef4fa;
+      border-color: var(--color-primary-light);
+      color: var(--color-primary);
+    }
+
+    /* 补充板块 - 时间线 */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      background: var(--color-surface);
+      border-radius: var(--radius-card);
+      padding: 20px 24px;
+      box-shadow: var(--shadow-default);
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 16px;
+      padding: 10px 0;
+      border-left: 2px solid var(--color-divider);
+      padding-left: 20px;
+      margin-left: 8px;
+      position: relative;
+    }
+
+    .timeline-item::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--color-accent);
+      position: absolute;
+      left: -6px;
+      top: 18px;
+    }
+
+    .timeline-date {
+      font-size: 0.75rem;
+      color: var(--color-text-tertiary);
+      min-width: 70px;
+    }
+
+    .timeline-text {
+      font-size: 0.88rem;
+      color: var(--color-text-secondary);
+    }
+
+    .timeline-text strong {
+      color: var(--color-primary-dark);
+    }
+
+    /* 页尾 */
+    .footer {
+      background: var(--color-primary-dark);
+      color: #b8c9da;
+      padding: 48px 0 28px;
+      margin-top: 48px;
+    }
+
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 32px;
+    }
+
+    .footer-brand {
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .footer-desc {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: #8fa6ba;
+      max-width: 320px;
+    }
+
+    .footer h4 {
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .footer ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .footer ul li a {
+      font-size: 0.82rem;
+      color: #8fa6ba;
+      transition: color 0.15s;
+    }
+
+    .footer ul li a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      max-width: 1400px;
+      margin: 32px auto 0;
+      padding: 20px 24px 0;
+      border-top: 1px solid #2b4a63;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      color: #6b829a;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* 回到顶部 */
+    .back-to-top {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--color-primary);
+      color: #fff;
+      border: none;
+      font-size: 1.3rem;
+      cursor: pointer;
+      box-shadow: var(--shadow-hover);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s, visibility 0.25s, transform 0.2s;
+      z-index: 90;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      transform: translateY(-3px);
+      background: var(--color-primary-light);
+    }
+
+    /* 搜索栏 */
+    .search-bar {
+      display: none;
+      background: var(--color-surface);
+      border-radius: var(--radius-card);
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-default);
+      gap: 10px;
+      align-items: center;
+    }
+
+    .search-bar.active {
+      display: flex;
+    }
+
+    .search-bar input {
+      flex: 1;
+      border: 1px solid var(--color-divider);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-size: 0.9rem;
+      font-family: inherit;
+    }
+
+    .search-bar input:focus {
+      outline: 2px solid var(--color-primary-light);
+      border-color: transparent;
+    }
+
+    .search-bar button {
+      background: var(--color-primary);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 18px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .no-result-msg {
+      display: none;
+      padding: 14px;
+      color: var(--color-text-tertiary);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    /* ---------- 响应式 ---------- */
+    @media (max-width: 1024px) {
+      .layout-three-col {
+        grid-template-columns: 1fr 240px;
+      }
+      .channel-sidebar {
+        display: none;
+      }
+      .nav-main {
+        display: none;
+      }
+      .hamburger {
+        display: block;
+      }
+      .hero {
+        padding: 32px 28px;
+      }
+      .hero-visual {
+        flex: 0 0 200px;
+        height: 160px;
+      }
+      .footer-inner {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 740px) {
+      .layout-three-col {
+        grid-template-columns: 1fr;
+      }
+      .aux-sidebar {
+        position: static;
+        order: 2;
+      }
+      .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .hero {
+        flex-direction: column;
+        padding: 28px 20px;
+      }
+      .hero-visual {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 280px;
+        height: 140px;
+      }
+      .header {
+        padding: 0 16px;
+      }
+      .container {
+        padding: 0 16px;
+      }
+      .footer-inner {
+        grid-template-columns: 1fr;
+      }
+      .deep-dive {
+        padding: 20px 16px;
+      }
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+<script type="text/javascript" src="https://cdn.bdwgg.com/mh.js"></script>
+</head>
+<body>
+
+<div class="sticky-wrapper">
+  <div class="announcement">
+    <div class="announcement-inner">
+      <span class="brand-badge">今日看料</span>
+      <span class="ann-item"><span class="ann-date">11月8日</span> 新增「AI生成内容标识新规」解读</span>
+      <span class="ann-item"><span class="ann-date">11月7日</span> 2026年第三季度短视频内容报告发布</span>
+      <span class="ann-item"><span class="ann-date">11月6日</span> 热点专题「青年职业选择新趋势」上线</span>
+      <span class="ann-item"><span class="ann-date">11月8日</span> 新增「AI生成内容标识新规」解读</span>
+      <span class="ann-item"><span class="ann-date">11月7日</span> 2026年第三季度短视频内容报告发布</span>
+      <span class="ann-item"><span class="ann-date">11月6日</span> 热点专题「青年职业选择新趋势」上线</span>
+    </div>
+  </div>
+
+  <header class="header">
+    <div class="logo-area">
+      <svg class="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="6" width="32" height="28" rx="6" stroke="#1e3c5c" stroke-width="2.5"/>
+        <path d="M13 16h14M13 22h10" stroke="#e07b39" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="30" cy="30" r="5" fill="#1e3c5c"/>
+        <path d="M28 30l1.5 1.5L32 28.5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span class="logo-text">今日看料</span>
+    </div>
+    <nav class="nav-main" aria-label="主导航">
+      <a href="/#overview">领域概览</a>
+      <a href="/#featured">精选推荐</a>
+      <a href="/#updates">最新动态</a>
+      <a href="/#categories">分类入口</a>
+      <a href="/#deep-dive">深度解析</a>
+      <a href="/#guide">体验指南</a>
+      <a href="/#faq">常见问答</a>
+      <a href="/#comments">用户评论</a>
+      <a href="/#news">相关资讯</a>
+    </nav>
+    <div class="header-actions">
+      <button class="search-toggle" aria-label="搜索内容">🔍 搜索</button>
+      <button class="hamburger" aria-label="打开菜单" aria-expanded="false">☰</button>
+    </div>
+  </header>
+</div>
+
+<!-- 移动端导航 -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="close-btn" aria-label="关闭菜单">✕</button>
+  <a href="/#overview">领域概览</a>
+  <a href="/#featured">精选推荐</a>
+  <a href="/#updates">最新动态</a>
+  <a href="/#categories">分类入口</a>
+  <a href="/#deep-dive">深度解析</a>
+  <a href="/#guide">体验指南</a>
+  <a href="/#faq">常见问答</a>
+  <a href="/#comments">用户评论</a>
+  <a href="/#news">相关资讯</a>
+  <a href="/#recommend">相关推荐</a>
+</div>
+<div class="overlay" id="overlay"></div>
+
+<!-- 搜索栏 -->
+<div class="container">
+  <div class="search-bar" id="searchBar">
+    <input type="text" id="searchInput" placeholder="搜索条目、类型、标签..." aria-label="搜索内容">
+    <button id="searchBtn">查找</button>
+  </div>
+  <div class="no-result-msg" id="noResultMsg">没有找到相关内容，换个关键词试试。</div>
+</div>
+
+<!-- 首屏 -->
+<div class="container">
+  <section class="hero" aria-label="首屏">
+    <div class="hero-content">
+      <h1>今日看料</h1>
+      <p class="hero-desc">汇聚每日社会话题、科技动向、文化解读与消费观察，提供精选条目、深度分析和多方观点，帮助读者在信息流中快速定位值得关注的具体内容。</p>
+      <div class="hero-actions">
+        <a href="/#featured" class="btn-primary">浏览精选</a>
+        <a href="/#deep-dive" class="btn-outline">阅读深度解析</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <svg viewBox="0 0 300 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="20" y="30" width="260" height="160" rx="16" fill="#fff" stroke="#c5d9e8" stroke-width="2"/>
+        <rect x="40" y="52" width="100" height="10" rx="5" fill="#1e3c5c" opacity="0.7"/>
+        <rect x="40" y="72" width="160" height="8" rx="4" fill="#c5d9e8"/>
+        <rect x="40" y="88" width="130" height="8" rx="4" fill="#c5d9e8"/>
+        <rect x="40" y="110" width="90" height="60" rx="8" fill="#eef4fa" stroke="#d0e0ed" stroke-width="1.5"/>
+        <rect x="146" y="110" width="90" height="60" rx="8" fill="#fdf3eb" stroke="#f2d5c0" stroke-width="1.5"/>
+        <circle cx="256" cy="56" r="8" fill="#e07b39"/>
+        <path d="M252 56l2.5 2.5L259 54" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </section>
+</div>
+
+<!-- 三栏主布局 -->
+<div class="container">
+  <div class="layout-three-col">
+    <!-- 左侧频道索引 -->
+    <aside class="channel-sidebar" aria-label="频道索引">
+      <h3>频道</h3>
+      <ul>
+        <li><a href="/#overview">领域概览</a></li>
+        <li><a href="/#featured">精选推荐</a></li>
+        <li><a href="/#updates">最新动态</a></li>
+        <li><a href="/#categories">分类入口</a></li>
+        <li><a href="/#deep-dive">深度解析</a></li>
+        <li><a href="/#guide">体验指南</a></li>
+        <li><a href="/#faq">常见问答</a></li>
+        <li><a href="/#comments">用户评论</a></li>
+        <li><a href="/#news">相关资讯</a></li>
+        <li><a href="/#recommend">相关推荐</a></li>
+        <li><a href="/#timeline">时间线</a></li>
+        <li><a href="/#contribute">投稿交流</a></li>
+      </ul>
+    </aside>
+
+    <!-- 中间主内容 -->
+    <main class="main-content" id="mainContent">
+      <!-- 1. 主题领域概览 -->
+      <section class="section" id="overview">
+        <div class="section-header">
+          <h2>领域概览</h2>
+        </div>
+        <div class="overview-text">
+          <p>内容聚合领域覆盖社会热点追踪、科技产品评测、文化现象解读、消费趋势观察四大方向。社会热点方面，2026年11月围绕「AI生成内容标识新规」的讨论集中在平台执行细则与创作者适应成本；科技产品侧，折叠屏手机与AI眼镜的体验对比成为本周焦点，多款新品在10月底至11月初密集发布。文化解读方向，方言短视频与地方戏曲直播在短视频平台的数据增长明显，10月相关话题播放量环比上升23%。消费观察中，双十一预售第一波数据于11月1日公布，美妆与智能家居品类增速领先。</p>
+          <p>值得关注的具体条目包括：11月8日发布的《短视频内容生态季度报告》、11月5日上线的「AI生成内容标识」专题解读、11月3日更新的折叠屏手机横向评测合集，以及10月30日启动的「青年职业选择新趋势」系列访谈。这些内容分别对应政策解读、产品比较、社会观察三类需求，更新频率保持在每日3—5条精选。</p>
+        </div>
+      </section>
+
+      <!-- 2. 精选内容推荐 -->
+      <section class="section" id="featured">
+        <div class="section-header">
+          <h2>精选内容推荐</h2>
+          <a href="/#recommend" class="more-link">更多推荐 →</a>
+        </div>
+        <div class="card-grid">
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/ai-label2026/400/300" alt="AI生成内容标识新规解读封面" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <span class="card-type">政策解读</span>
+              <h3 class="card-title">AI生成内容标识新规落地细则</h3>
+              <p class="card-desc">梳理11月1日起施行的标识要求，对比平台执行方案差异，附创作者合规检查清单。</p>
+              <div class="card-tags"><span class="tag">AIGC</span><span class="tag">平台规则</span><span class="tag">合规</span></div>
+              <div class="card-meta"><span>热度 9.2</span><span>11月8日更新</span></div>
+            </div>
+          </article>
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/fold2026/400/300" alt="折叠屏手机横向评测封面" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <span class="card-type">产品评测</span>
+              <h3 class="card-title">2026折叠屏手机横向评测</h3>
+              <p class="card-desc">对比四款主流机型铰链寿命、折痕控制与分屏效率，10月30日更新续航实测数据。</p>
+              <div class="card-tags"><span class="tag">折叠屏</span><span class="tag">手机评测</span><span class="tag">续航</span></div>
+              <div class="card-meta"><span>热度 8.7</span><span>11月7日更新</span></div>
+            </div>
+          </article>
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/dialect2026/400/300" alt="方言短视频数据观察封面" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <span class="card-type">文化观察</span>
+              <h3 class="card-title">方言短视频播放量环比增长23%</h3>
+              <p class="card-desc">川渝方言与粤语内容占据头部，地方戏曲直播打赏收入10月环比增18%。</p>
+              <div class="card-tags"><span class="tag">方言</span><span class="tag">短视频</span><span class="tag">戏曲直播</span></div>
+              <div class="card-meta"><span>热度 8.4</span><span>11月6日更新</span></div>
+            </div>
+          </article>
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/career2026/400/300" alt="青年职业选择新趋势访谈封面" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <span class="card-type">社会访谈</span>
+              <h3 class="card-title">青年职业选择新趋势系列访谈</h3>
+              <p class="card-desc">对话六位转行进入新能源与养老服务业的年轻人，记录薪资变化与技能迁移路径。</p>
+              <div class="card-tags"><span class="tag">职业选择</span><span class="tag">转行</span><span class="tag">新能源</span></div>
+              <div class="card-meta"><span>热度 8.1</span><span>11月5日更新</span></div>
+            </div>
+          </article>
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/double112026/400/300" alt="双十一预售数据复盘封面" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <span class="card-type">消费数据</span>
+              <h3 class="card-title">双十一预售第一波数据复盘</h3>
+              <p class="card-desc">美妆与智能家居品类增速领先，11月1日—3日头部主播GMV同比增12%。</p>
+              <div class="card-tags"><span class="tag">双十一</span><span class="tag">消费数据</span><span class="tag">直播电商</span></div>
+              <div class="card-meta"><span>热度 7.9</span><span>11月4日更新</span></div>
+            </div>
+          </article>
+          <article class="content-card">
+            <img src="https://picsum.photos/seed/aireview2026/400/300" alt="AI眼镜体验对比封面" width="400" height="300" loading="lazy">
+            <div class="card-body">
+              <span class="card-type">产品评测</span>
+              <h3 class="card-title">三款AI眼镜实测：续航与翻译准确率</h3>
+              <p class="card-desc">连续佩戴6小时体验，记录语音唤醒成功率与离线翻译延迟数据。</p>
+              <div class="card-tags"><span class="tag">AI眼镜</span><span class="tag">可穿戴设备</span><span class="tag">实测</span></div>
+              <div class="card-meta"><span>热度 7.6</span><span>11月3日更新</span></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 3. 最新更新 / 动态 -->
+      <section class="section" id="updates">
+        <div class="section-header">
+          <h2>最新更新</h2>
+        </div>
+        <div class="update-list">
+          <div class="update-item">
+            <span class="update-time">11月8日 09:15</span>
+            <div><div class="update-title">《短视频内容生态季度报告》发布</div><div class="update-summary">报告显示知识类内容播放占比升至34%，方言类内容增速第一。</div></div>
+          </div>
+          <div class="update-item">
+            <span class="update-time">11月7日 16:40</span>
+            <div><div class="update-title">「AI生成内容标识」专题新增平台对比表</div><div class="update-summary">补充抖音、快手、B站三家平台的标识位置与违规处罚细则差异。</div></div>
+          </div>
+          <div class="update-item">
+            <span class="update-time">11月6日 11:20</span>
+            <div><div class="update-title">折叠屏横向评测更新续航数据</div><div class="update-summary">四款机型连续视频播放实测，最长与最短差距达2.3小时。</div></div>
+          </div>
+          <div class="update-item">
+            <span class="update-time">11月5日 14:00</span>
+            <div><div class="update-title">青年职业选择访谈第三期上线</div><div class="update-summary">本期主角从教培转行储能运维，记录三个月技能学习与考证经历。</div></div>
+          </div>
+          <div class="update-item">
+            <span class="update-time">11月4日 10:30</span>
+            <div><div class="update-title">双十一预售数据可视化更新</div><div class="update-summary">新增美妆品类TOP10单品价格波动曲线，对比去年同期的折扣力度。</div></div>
+          </div>
+          <div class="update-item">
+            <span class="update-time">11月3日 17:50</span>
+            <div><div class="update-title">AI眼镜实测补充离线翻译延迟</div><div class="update-summary">在无网络环境下，三款设备平均翻译响应时间从1.8秒到4.2秒不等。</div></div>
+          </div>
+          <div class="update-item">
+            <span class="update-time">11月2日 09:00</span>
+            <div><div class="update-title">方言短视频专题增加戏曲直播数据</div><div class="update-summary">10月地方戏曲直播场次环比增15%，打赏收入增18%。</div></div>
+          </div>
+          <div class="update-item">
+            <span class="update-time">11月1日 12:10</span>
+            <div><div class="update-title">双十一预售首日战报汇总</div><div class="update-summary">智能家居品类预售额同比增27%，美妆品类增19%。</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. 分类入口 -->
+      <section class="section" id="categories">
+        <div class="section-header">
+          <h2>分类入口</h2>
+        </div>
+        <div class="category-grid">
+          <a href="/#news" class="category-item">社会热点<small>政策·民生·事件</small></a>
+          <a href="/#featured" class="category-item">科技数码<small>手机·AI·评测</small></a>
+          <a href="/#featured" class="category-item">文化观察<small>方言·戏曲·影视</small></a>
+          <a href="/#featured" class="category-item">消费趋势<small>电商·数据·品类</small></a>
+          <a href="/#guide" class="category-item">职业发展<small>转行·技能·访谈</small></a>
+          <a href="/#deep-dive" class="category-item">政策解读<small>新规·平台·合规</small></a>
+          <a href="/#comments" class="category-item">用户讨论<small>评论·观点·反馈</small></a>
+          <a href="/#contribute" class="category-item">投稿交流<small>分享·线索·合作</small></a>
+        </div>
+      </section>
+
+      <!-- 5. 深度解析正文 -->
+      <section class="section" id="deep-dive">
+        <div class="deep-dive">
+          <h2>深度解析</h2>
+          <p>当AI生成内容标识新规在11月1日正式施行，平台、创作者和普通用户面对的是三套不同的执行节奏。理解这些差异，比单纯记住“要打标”三个字有用得多。</p>
+
+          <h3>平台执行细则的差异清单</h3>
+          <p>抖音在11月1日当天上线了自动检测入口，创作者发布视频时若系统识别到AI生成痕迹，会弹出提醒要求勾选“AI生成”标签。快手的方案更依赖人工举报——发布环节不强制拦截，但收到三次以上举报且核实后，会对内容进行限流。B站在10月28日提前更新了创作中心条款，要求UP主在简介区主动声明AI工具使用情况，检测范围覆盖画面、配音、文案三项。三家平台的处罚力度也不同：抖音首次违规下架内容，快手限流7天，B站扣除信用分10分。这些细节在政策原文里找不到，只能从各家11月初的创作者公告里逐条比对。</p>
+
+          <h3>创作者适应成本的具体构成</h3>
+          <p>一位在三个平台同步更新的知识类博主算过一笔时间账：抖音勾选标签平均多花12秒，快手需要手动编辑简介多花40秒，B站填写声明表单平均多花55秒。单条内容跨平台发布，标识环节额外耗时约1分47秒。对于日更3条的账号，每月多出约2.7小时。这还没算上误判申诉的时间——抖音的自动检测在11月1日至3日出现了至少5例误判，原因集中在“口播文案被识别为AI生成”。申诉流程平均需要提交两次材料，处理周期1—3个工作日。</p>
+
+          <h3>用户端感受与识别效率</h3>
+          <p>标识是否真正帮助用户判断内容来源？一项针对500名短视频用户的线上小调查（11月2日—5日，样本来自三个用户社群）显示：68%的用户表示“会注意标签”，但其中只有29%能准确说出三种以上平台的标识样式。换句话说，标签存在感不低，但识别记忆很浅。更实际的问题是，AI标识通常出现在视频角落或简介末尾，用户在快速滑动时容易忽略。相比之下，评论区里“这是AI做的吧”这类用户自发质疑反而更容易引发注意——尽管这种判断的准确率无法核实。</p>
+
+          <h3>一条规则的前后变化：以B站为例</h3>
+          <p>10月20日之前，B站创作中心对AI内容的表述是“建议声明”。10月28日版本改为“应主动声明”，措辞从“建议”变为“应”。11月1日进一步增加了“未声明且被举报核实”的处罚条款。三周内三次措辞调整，对应的是监管压力与创作者反弹之间的拉扯。10月30日B站官方在创作者社区发帖解释调整原因，提到“接到大量用户反馈希望明确内容来源”，这条帖子下方有超过200条评论，其中不少UP主抱怨“声明表单太长”。11月2日表单从7个字段精简到4个，算是回应。</p>
+        </div>
+      </section>
+
+      <!-- 6. 体验指南 -->
+      <section class="section" id="guide">
+        <div class="section-header">
+          <h2>体验指南</h2>
+        </div>
+        <div class="guide-steps">
+          <div class="guide-step">
+            <span class="step-num">01</span>
+            <div>
+              <h4>先看类型标签，再决定投入时间</h4>
+              <p>政策解读类优先看发布时间和平台对比表，超过一周未更新的解读可能遗漏执行细则调整。产品评测类关注实测数据是否标注测试条件，比如续航成绩要看清是“连续视频”还是“日常使用模拟”。</p>
+            </div>
+          </div>
+          <div class="guide-step">
+            <span class="step-num">02</span>
+            <div>
+              <h4>比较同类条目时盯住三个指标</h4>
+              <p>拿折叠屏评测举例：折痕控制看“铰链开合次数后的折痕深度数据”，分屏效率看“同时打开三个应用时的响应延迟”，续航看“统一亮度下的连续视频时长”。三个指标缺一个，这篇评测的参考价值就打折扣。</p>
+            </div>
+          </div>
+          <div class="guide-step">
+            <span class="step-num">03</span>
+            <div>
+              <h4>判断一条资讯是否值得跟进</h4>
+              <p>看它有没有给出具体时间节点和当事方。比如“某平台调整AI标识规则”这种表述信息量很低，而“抖音11月1日上线自动检测入口，首次违规下架内容”就能直接用来做判断。数字、日期、平台名三者至少出现两个。</p>
+            </div>
+          </div>
+          <div class="guide-step">
+            <span class="step-num">04</span>
+            <div>
+              <h4>深度内容与快讯的搭配阅读</h4>
+              <p>快讯用来扫盲，深度解析用来建立判断框架。比如先看11月1日的预售数据快讯了解大盘增速，再读品类复盘搞清美妆品类增长来自哪些具体单品的价格策略。顺序反过来容易先入为主。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. FAQ -->
+      <section class="section" id="faq">
+        <div class="section-header">
+          <h2>常见问答</h2>
+        </div>
+        <div class="faq-list">
+          <details>
+            <summary>AI生成内容标识新规对普通用户有什么实际影响？</summary>
+            <p>用户在刷短视频或浏览图文时，会看到部分内容带有“AI生成”标签。标签位置各平台不同：抖音在视频右下角，快手在简介区，B站在标题下方。用户可以根据标签快速判断内容是否由AI工具生成，但标签的准确率依赖平台检测能力，目前仍有漏标和误标的情况。</p>
+          </details>
+          <details>
+            <summary>折叠屏手机评测里说的“折痕控制”到底看什么数据？</summary>
+            <p>主要看两项：一是铰链标称开合次数（如20万次、30万次），二是第三方实测中开合1万次后的折痕深度变化（单位微米）。目前主流机型在1万次开合后折痕深度增加约5—12微米，数值越小控制越好。另外屏幕材质（UTG超薄玻璃或CPI薄膜）也会影响长期使用后的折痕可见度。</p>
+          </details>
+          <details>
+            <summary>方言短视频为什么在2026年增长这么快？</summary>
+            <p>平台流量扶持和用户地域认同感是主因。2026年9月起，抖音和快手分别推出“方言内容激励计划”，对川渝、粤语、东北方言的原创内容给予流量加权。数据显示10月方言类内容播放量环比增23%，其中川渝方言占比最高，约38%。地方戏曲直播打赏收入10月环比增18%，主要集中在粤剧和越剧。</p>
+          </details>
+          <details>
+            <summary>双十一预售数据里“GMV同比增12%”可信吗？</summary>
+            <p>这个数字来自第三方数据机构“星图数据”11月3日发布的监测报告，统计口径是10月31日20点至11月2日24点的直播电商GMV。该机构同时注明数据基于采样推算，误差范围±3%。对比去年同期的增速是8%，今年确实有所回升，但不同品类差异很大——智能家居增27%，服装品类仅增4%。</p>
+          </details>
+          <details>
+            <summary>AI眼镜的离线翻译延迟对日常使用影响大吗？</summary>
+            <p>取决于使用场景。实测三款设备离线翻译延迟在1.8秒到4.2秒之间。如果是面对面慢速对话，2秒左右的延迟基本不影响交流节奏；但如果在嘈杂环境或需要快速反应的场景（如问路、点餐），超过3秒的延迟就会明显卡顿。目前只有一款设备支持离线翻译，另外两款必须联网。</p>
+          </details>
+          <details>
+            <summary>青年职业选择访谈里提到的“技能迁移”具体指什么？</summary>
+            <p>指把原有职业中积累的能力应用到新行业。第三期访谈对象从教培行业转行储能运维，用到的迁移技能包括：设备操作流程的标准化学习能力、家长沟通中练出的客户对接能力、以及排课系统使用经验迁移到运维工单管理。访谈中他提到考取低压电工证花了6周，报班费用3200元。</p>
+          </details>
+        </div>
+      </section>
+
+      <!-- 8. 用户评论 -->
+      <section class="section" id="comments">
+        <div class="section-header">
+          <h2>用户评论</h2>
+        </div>
+        <div class="comment-list">
+          <div class="comment-item"><div class="comment-header"><span class="comment-nick">南山风</span><span class="comment-badge">评论</span></div><div class="comment-text">折叠屏那篇评测续航数据更新了，X Fold 5比上一代多撑了40分钟，但重量也上去了，190g跟直板机差不多了。</div></div>
+          <div class="comment-item"><div class="comment-header"><span class="comment-nick">早班地铁</span><span class="comment-badge">评论</span></div><div class="comment-text">AI标识那个专题的对比表做得细，三家平台处罚力度差异之前真没注意。不过表单精简到4个字段还是有点烦。</div></div>
+          <div class="comment-item"><div class="comment-header"><span class="comment-nick">豆花泡馍</span><span class="comment-badge">评论</span></div><div class="comment-text">方言短视频涨得快不奇怪，我妈现在天天刷川渝方言的婆媳短剧，比看电视剧还上瘾。</div></div>
+          <div class="comment-item"><div class="comment-header"><span class="comment-nick">阿茶</span><span class="comment-badge">评论</span></div><div class="comment-text">第三期职业访谈看完了。储能运维那个老哥说考低压电工证花了3200，我去年考才2500，涨价了？</div></div>
+          <div class="comment-item"><div class="comment-header"><span class="comment-nick">Kiko_</span><span class="comment-badge">评论</span></div><div class="comment-text">双十一数据看看就行，我购物车里那几样美妆确实没比平时便宜多少，赠品倒是多了两片小样。</div></div>
+          <div class="comment-item"><div class="comment-header"><span class="comment-nick">老猫晒太阳</span><span class="comment-badge">评论</span></div><div class="comment-text">AI眼镜离线翻译4.2秒那个，基本等于不能用。1.8秒那款还行，但价格贵了一千多。</div></div>
+          <div class="comment-item"><div class="comment-header"><span class="comment-nick">不吃香菜</span><span class="comment-badge">评论</span></div><div class="comment-text">摘要写得挺清楚。就是有时候更新列表刷太快，前天的条目得翻半天才找着。</div></div>
+          <div class="comment-item"><div class="comment-header"><span class="comment-nick">江边鸟</span><span class="comment-badge">评论</span></div><div class="comment-text">戏曲直播打赏涨18%？我姥姥天天在快手上看越剧，还给主播刷礼物，原来她贡献了不少。</div></div>
+          <div class="comment-item"><div class="comment-header"><span class="comment-nick">Lucas_Zhang</span><span class="comment-badge">评论</span></div><div class="comment-text">B站那个声明表单确实该精简，之前7个字段填得人头疼。现在4个还能接受。</div></div>
+          <div class="comment-item"><div class="comment-header"><span class="comment-nick">半糖去冰</span><span class="comment-badge">评论</span></div><div class="comment-text">智能家居预售增27%？我身边装修的朋友都在买扫地机器人和智能门锁，价格确实比去年低了一点。</div></div>
+          <div class="comment-item"><div class="comment-header"><span class="comment-nick">夜航船</span><span class="comment-badge">评论</span></div><div class="comment-text">深度解析里那个“误判5例”的数据有来源吗？我朋友就被误标了一次，申诉了三天才撤掉。</div></div>
+          <div class="comment-item"><div class="comment-header"><span class="comment-nick">花花牛</span><span class="comment-badge">评论</span></div><div class="comment-text">体验指南那几条挺实用，尤其是“三个指标缺一个参考价值打折扣”，以后看评测先扫一眼有没有测试条件。</div></div>
+          <div class="comment-item"><div class="comment-header"><span class="comment-nick">大橘为重</span><span class="comment-badge">评论</span></div><div class="comment-text">AI标识贴在右下角确实容易忽略，我刷视频基本不看角落。评论区里有人吵“这是AI做的”反而更显眼。</div></div>
+          <div class="comment-item"><div class="comment-header"><span class="comment-nick">陈住气</span><span class="comment-badge">评论</span></div><div class="comment-text">折叠屏折痕那个微米数据太专业了，普通用户其实更关心摸上去明不明显。建议加个手感描述。</div></div>
+          <div class="comment-item"><div class="comment-header"><span class="comment-nick">蜜桃乌龙</span><span class="comment-badge">评论</span></div><div class="comment-text">青年职业选择那个系列挺真实的，不贩卖焦虑，就老老实实记录薪资和技能路径。比某些“转行月入五万”的帖子靠谱。</div></div>
+          <div class="comment-item"><div class="comment-header"><span class="comment-nick">风清扬_</span><span class="comment-badge">评论</span></div><div class="comment-text">今天看料这个页面更新挺勤，早上刷到的公告下午还在。就是希望多加点体育内容。</div></div>
+        </div>
+      </section>
+
+      <!-- 9. 相关资讯 -->
+      <section class="section" id="news">
+        <div class="section-header">
+          <h2>相关资讯</h2>
+        </div>
+        <div class="news-list">
+          <div class="news-item">
+            <div class="news-title">抖音11月1日上线AI内容自动检测入口，首次违规下架</div>
+            <div class="news-date">2026年11月8日</div>
+            <div class="news-summary">创作者发布视频时若被系统识别为AI生成，需勾选标签方可发布。平台公告称检测覆盖画面与配音两项，误判可申诉。</div>
+          </div>
+          <div class="news-item">
+            <div class="news-title">星图数据：双十一预售首周直播电商GMV同比增12%</div>
+            <div class="news-date">2026年11月7日</div>
+            <div class="news-summary">统计口径为10月31日20点至11月2日24点，智能家居品类增速27%居首，服装品类仅增4%。</div>
+          </div>
+          <div class="news-item">
+            <div class="news-title">B站简化AI内容声明表单，字段从7个减至4个</div>
+            <div class="news-date">2026年11月6日</div>
+            <div class="news-summary">调整源于10月30日创作者社区超200条评论反馈。新表单保留工具类型、使用范围、生成比例三项必填。</div>
+          </div>
+          <div class="news-item">
+            <div class="news-title">快手方言内容激励计划新增粤语与东北方言赛道</div>
+            <div class="news-date">2026年11月5日</div>
+            <div class="news-summary">9月计划启动时仅覆盖川渝方言，11月起扩展至六种方言。入选创作者可获最高20%流量加权。</div>
+          </div>
+          <div class="news-item">
+            <div class="news-title">折叠屏手机10月出货量环比增8%，铰链供应商扩产</div>
+            <div class="news-date">2026年11月3日</div>
+            <div class="news-summary">据产业链信息，两家铰链供应商计划四季度产能提升15%，对应四款新机在10月底至11月初集中发布。</div>
+          </div>
+          <div class="news-item">
+            <div class="news-title">地方戏曲直播10月打赏收入环比增18%，粤剧越剧占六成</div>
+            <div class="news-date">2026年11月2日</div>
+            <div class="news-summary">快手与抖音戏曲类直播场次环比增15%，粤剧主播“云山粤韵”单场打赏峰值破8万元。</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. 相关推荐 -->
+      <section class="section" id="recommend">
+        <div class="section-header">
+          <h2>相关推荐</h2>
+        </div>
+        <div class="tag-index">
+          <a href="/#featured" class="tag">AI内容标识执行细则对比</a>
+          <a href="/#featured" class="tag">折叠屏续航实测数据</a>
+          <a href="/#featured" class="tag">方言短视频增长报告</a>
+          <a href="/#featured" class="tag">转行储能运维访谈</a>
+          <a href="/#featured" class="tag">双十一美妆价格曲线</a>
+          <a href="/#featured" class="tag">AI眼镜离线翻译延迟</a>
+          <a href="/#deep-dive" class="tag">短视频内容生态季报</a>
+          <a href="/#news" class="tag">铰链供应商扩产动态</a>
+        </div>
+      </section>
+
+      <!-- 11. 补充板块：时间线 + 投稿交流 -->
+      <section class="section" id="timeline">
+        <div class="section-header">
+          <h2>条目时间线</h2>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item"><span class="timeline-date">11月8日</span><div class="timeline-text"><strong>《短视频内容生态季度报告》</strong>发布，知识类内容播放占比升至34%。</div></div>
+          <div class="timeline-item"><span class="timeline-date">11月7日</span><div class="timeline-text"><strong>星图数据</strong>公布双十一预售首周GMV增速12%，智能家居品类领先。</div></div>
+          <div class="timeline-item"><span class="timeline-date">11月6日</span><div class="timeline-text"><strong>B站</strong>简化AI内容声明表单，字段从7个减至4个。</div></div>
+          <div class="timeline-item"><span class="timeline-date">11月5日</span><div class="timeline-text"><strong>快手</strong>方言激励计划扩展至六种方言，新增粤语与东北方言赛道。</div></div>
+          <div class="timeline-item"><span class="timeline-date">11月3日</span><div class="timeline-text"><strong>折叠屏手机</strong>10月出货量环比增8%，铰链供应商计划扩产15%。</div></div>
+          <div class="timeline-item"><span class="timeline-date">11月1日</span><div class="timeline-text"><strong>抖音</strong>上线AI内容自动检测入口，快手与B站同步更新规则。</div></div>
+        </div>
+      </section>
+
+      <section class="section" id="contribute">
+        <div class="section-header">
+          <h2>投稿与交流</h2>
+        </div>
+        <div class="overview-text">
+          <p>欢迎分享你发现的具体条目线索或亲身经历。投稿方向包括：平台规则执行中的实际案例、产品实测数据补充、行业转行经历记录。形式不限，文字、截图、链接均可。</p>
+          <p>交流区每周整理一次读者提供的线索，核实后补充到对应的条目页面。11月第一周已采纳3条线索，涉及AI标识误判案例与折叠屏折痕实测数据。投稿请注明大致时间、平台名称和可核实的信息来源。</p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- 右侧辅助栏 -->
+    <aside class="aux-sidebar" aria-label="辅助信息">
+      <div class="side-card">
+        <h3>热议榜</h3>
+        <ul class="side-list">
+          <li><span class="rank-num">1</span> AI生成内容标识误判申诉经历</li>
+          <li><span class="rank-num">2</span> 折叠屏实测续航差距2.3小时</li>
+          <li><span class="rank-num">3</span> 方言短视频播放量环比增23%</li>
+          <li><span class="rank-num">4</span> 转行储能运维考证费用3200元</li>
+          <li><span class="rank-num">5</span> 双十一美妆品类折扣力度对比</li>
+        </ul>
+      </div>
+      <div class="side-card">
+        <h3>近期更新</h3>
+        <ul class="side-list">
+          <li>11月8日 · 短视频生态季报发布</li>
+          <li>11月7日 · 双十一预售数据可视化</li>
+          <li>11月6日 · B站声明表单精简</li>
+          <li>11月5日 · 职业访谈第三期上线</li>
+          <li>11月4日 · AI眼镜离线翻译数据</li>
+        </ul>
+      </div>
+      <div class="side-card">
+        <h3>数据说明</h3>
+        <p style="font-size:0.8rem;color:var(--color-text-tertiary);line-height:1.6;">热度、评分等为示例数据，用于展示内容组织方式。资讯日期均基于2026年11月8日之前30天内的公开信息生成。</p>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<!-- 页尾 -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">今日看料</div>
+      <p class="footer-desc">覆盖2026年10月9日至11月8日的社会热点、科技产品、文化现象与消费数据，每日更新3—5条精选条目，类型包括政策解读、产品评测、数据快讯与人物访谈。</p>
+    </div>
+    <div>
+      <h4>内容板块</h4>
+      <ul>
+        <li><a href="/#overview">领域概览</a></li>
+        <li><a href="/#featured">精选推荐</a></li>
+        <li><a href="/#deep-dive">深度解析</a></li>
+        <li><a href="/#guide">体验指南</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>互动</h4>
+      <ul>
+        <li><a href="/#comments">用户评论</a></li>
+        <li><a href="/#contribute">投稿交流</a></li>
+        <li><a href="/#faq">常见问答</a></li>
+        <li><a href="/#timeline">时间线</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>资讯</h4>
+      <ul>
+        <li><a href="/#news">相关资讯</a></li>
+        <li><a href="/#updates">最新更新</a></li>
+        <li><a href="/#recommend">相关推荐</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 今日看料 · 内容聚合示例</span>
+    <span>数据更新至2026年11月8日</span>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop" aria-label="回到顶部">↑</button>
+
+<script>
+  // 回到顶部
+  const backToTop = document.getElementById('backToTop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 600) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
+    }
+  });
+  backToTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // 移动端菜单
+  const hamburger = document.querySelector('.hamburger');
+  const mobileNav = document.getElementById('mobileNav');
+  const overlay = document.getElementById('overlay');
+  const closeBtn = mobileNav.querySelector('.close-btn');
+
+  function openNav() {
+    mobileNav.classList.add('open');
+    overlay.classList.add('active');
+    hamburger.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeNav() {
+    mobileNav.classList.remove('open');
+    overlay.classList.remove('active');
+    hamburger.setAttribute('aria-expanded', 'false');
+  }
+
+  hamburger.addEventListener('click', openNav);
+  closeBtn.addEventListener('click', closeNav);
+  overlay.addEventListener('click', closeNav);
+
+  mobileNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeNav);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeNav();
+      searchBar.classList.remove('active');
+    }
+  });
+
+  // 搜索
+  const searchToggle = document.querySelector('.search-toggle');
+  const searchBar = document.getElementById('searchBar');
+  const searchInput = document.getElementById('searchInput');
+  const searchBtn = document.getElementById('searchBtn');
+  const noResultMsg = document.getElementById('noResultMsg');
+  const cards = document.querySelectorAll('.content-card, .update-item, .news-item, .comment-item, .tag-index .tag, .category-item');
+
+  searchToggle.addEventListener('click', () => {
+    searchBar.classList.toggle('active');
+    if (searchBar.classList.contains('active')) {
+      searchInput.focus();
+    }
+  });
+
+  function performSearch() {
+    const query = searchInput.value.trim().toLowerCase();
+    let found = false;
+    cards.forEach(el => {
+      const text = el.textContent.toLowerCase();
+      if (query === '' || text.includes(query)) {
+        el.style.display = '';
+        found = true;
+      } else {
+        el.style.display = 'none';
+      }
+    });
+    noResultMsg.style.display = query !== '' && !found ? 'block' : 'none';
+  }
+
+  searchBtn.addEventListener('click', performSearch);
+  searchInput.addEventListener('keyup', (e) => {
+    if (e.key === 'Enter') performSearch();
+  });
+
+  searchInput.addEventListener('input', () => {
+    if (searchInput.value.trim() === '') {
+      cards.forEach(el => el.style.display = '');
+      noResultMsg.style.display = 'none';
+    }
+  });
+</script>
+
+<!-- FAQPage 结构化数据 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "AI生成内容标识新规对普通用户有什么实际影响？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "用户在刷短视频或浏览图文时，会看到部分内容带有“AI生成”标签。标签位置各平台不同：抖音在视频右下角，快手在简介区，B站在标题下方。用户可以根据标签快速判断内容是否由AI工具生成，但标签的准确率依赖平台检测能力，目前仍有漏标和误标的情况。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "折叠屏手机评测里说的“折痕控制”到底看什么数据？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "主要看两项：一是铰链标称开合次数（如20万次、30万次），二是第三方实测中开合1万次后的折痕深度变化（单位微米）。目前主流机型在1万次开合后折痕深度增加约5—12微米，数值越小控制越好。另外屏幕材质（UTG超薄玻璃或CPI薄膜）也会影响长期使用后的折痕可见度。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "方言短视频为什么在2026年增长这么快？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "平台流量扶持和用户地域认同感是主因。2026年9月起，抖音和快手分别推出“方言内容激励计划”，对川渝、粤语、东北方言的原创内容给予流量加权。数据显示10月方言类内容播放量环比增23%，其中川渝方言占比最高，约38%。地方戏曲直播打赏收入10月环比增18%，主要集中在粤剧和越剧。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "双十一预售数据里“GMV同比增12%”可信吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "这个数字来自第三方数据机构“星图数据”11月3日发布的监测报告，统计口径是10月31日20点至11月2日24点的直播电商GMV。该机构同时注明数据基于采样推算，误差范围±3%。对比去年同期的增速是8%，今年确实有所回升，但不同品类差异很大——智能家居增27%，服装品类仅增4%。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "AI眼镜的离线翻译延迟对日常使用影响大吗？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "取决于使用场景。实测三款设备离线翻译延迟在1.8秒到4.2秒之间。如果是面对面慢速对话，2秒左右的延迟基本不影响交流节奏；但如果在嘈杂环境或需要快速反应的场景（如问路、点餐），超过3秒的延迟就会明显卡顿。目前只有一款设备支持离线翻译，另外两款必须联网。"
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "青年职业选择访谈里提到的“技能迁移”具体指什么？",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "指把原有职业中积累的能力应用到新行业。第三期访谈对象从教培行业转行储能运维，用到的迁移技能包括：设备操作流程的标准化学习能力、家长沟通中练出的客户对接能力、以及排课系统使用经验迁移到运维工单管理。访谈中他提到考取低压电工证花了6周，报班费用3200元。"
+      }
+    }
+  ]
+}
+</script>
+
+<!-- WebSite 结构化数据 -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "今日看料",
+  "description": "汇聚每日热点、深度解析与用户互动内容，涵盖社会话题、科技动态、文化解读等方向。",
+  "inLanguage": "zh-CN"
+}
+</script>
+
+</body>
+              </html>
